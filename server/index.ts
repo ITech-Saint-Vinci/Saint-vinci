@@ -1,4 +1,7 @@
+import dotenv from "dotenv"
+dotenv.config()
 import express from "express"
+import academicYears from './routes/AcademicYear'
 import mongoose from "mongoose"
 import { apiConfig } from "./config"
 import { authRouter } from "./routes/auth"
@@ -18,7 +21,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRouter)
 app.use("/api/teacher", teacherRouter)
 app.use("/api/admin", adminRouter)
-
+app.use('/api', academicYears)
 mongoose.connect(apiConfig.db.mongoUrl).then(() => {
   app.listen(apiConfig.ports.appPort, () => {
     console.log(
