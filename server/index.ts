@@ -1,12 +1,25 @@
 import express from "express"
+import mongoose from "mongoose"
+import { apiConfig } from "./config"
+import { authRouter } from "./routes/auth"
+import cors from "cors"
 
 const app = express()
-const port = 3000
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.use(express.json());
+app.use(cors(apiConfig.cors));
+app.use((req, res, next) => {
+  console.log(req.path, req.method);
+  next();
+});
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.use("/api/auth", authRouter)
+
+mongoose.connect(apiConfig.db.mongoUrl).then(() => {
+  app.listen(apiConfig.ports.appPort, () => {
+    console.log(
+      "server is up and running and connected to the DB on port ",
+      apiConfig.ports.appPort
+    );
+  });
+});

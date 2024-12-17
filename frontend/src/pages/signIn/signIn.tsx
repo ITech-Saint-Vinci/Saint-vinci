@@ -25,9 +25,11 @@ export const SignIn = () => {
   };
 
   return (
-    <div className="flex justify-center items-center flex-col p-8 space-y-8 bg-white rounded-md">
-      <div className="text-3xl font-bold">Sign in</div>
-      <SignInForm onSubmit={onSubmit} isLoading={isLoading} />
+    <div className="flex justify-center items-center flex-col p-48 space-y-8 w-screen h-screen">
+      <div className="bg-white rounded-md w-2/4 h-full flex items-center flex-col p-8">
+        <div className="text-3xl font-bold">Sign in</div>
+        <SignInForm onSubmit={onSubmit} isLoading={isLoading} />
+      </div>
     </div>
   );
 };
