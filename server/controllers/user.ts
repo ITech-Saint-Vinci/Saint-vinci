@@ -41,18 +41,18 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
-
     if (!user) {
       throw new Error("Invalid credentials");
     }
-
+    
     const matches = await validatePassword(password, user.password!);
     if (!matches) {
       throw new Error("Invalid credentials");
     }
-
+    console.log("hello world")
+    
     const token = createToken(user._id);
-
+    
     createAuthResponse(200, { token }, res);
   } catch (error) {
     createAuthResponse(
