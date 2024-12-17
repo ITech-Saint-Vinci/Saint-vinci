@@ -1,12 +1,12 @@
-import { Eye } from 'lucide-react';
-import { Student, StudentLevel } from '@/types/student';
-import { Button } from '@/components/ui/button';
+import { Eye } from "lucide-react";
+import { Student, StudentLevel } from "@/types";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
+} from "@/components/ui/accordion";
 
 interface StudentAccordionProps {
   level: StudentLevel;
@@ -21,7 +21,7 @@ export function StudentAccordion({ level, students }: StudentAccordionProps) {
           <div className="flex items-center justify-between w-full pr-4">
             <h2 className="text-xl font-semibold">{level}</h2>
             <span className="text-sm text-muted-foreground">
-              {students.length} élève{students.length !== 1 ? 's' : ''}
+              {students.length} élève{students.length !== 1 ? "s" : ""}
             </span>
           </div>
         </AccordionTrigger>
@@ -41,9 +41,9 @@ export function StudentAccordion({ level, students }: StudentAccordionProps) {
                 <div className="flex items-center gap-4">
                   <span
                     className={`px-2 py-1 text-sm rounded-full ${
-                      student.status === 'Admis'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-orange-100 text-orange-700'
+                      student.status === "Admis"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-orange-100 text-orange-700"
                     }`}
                   >
                     {student.status}

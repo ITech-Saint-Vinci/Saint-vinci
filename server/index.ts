@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import { apiConfig } from "./config"
 import { authRouter } from "./routes/auth"
 import cors from "cors"
+import { teacherRouter } from "./routes/teacher"
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", authRouter)
+app.use("/api/teacher", teacherRouter)
 
 mongoose.connect(apiConfig.db.mongoUrl).then(() => {
   app.listen(apiConfig.ports.appPort, () => {
