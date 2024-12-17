@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
-export const Admin = model(
-  "Admin",
+export const User = model(
+  "User",
   new Schema({
     username: {
       type: String,
@@ -14,6 +14,10 @@ export const Admin = model(
     password: {
       type: String,
       minlength: 6,
+    },
+    role: {
+      type: String,
+      enum: ['teacher', 'admin', 'director']
     },
     createdAt: {
       type: Date,

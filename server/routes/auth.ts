@@ -1,6 +1,6 @@
 import express from "express";
 import { authValidation } from "../middleware/authValidation";
-import { signIn, validateToken } from "../controllers/auth";
+import { signIn, validateToken } from "../controllers/user";
 
 export const authRouter = express.Router();
 
