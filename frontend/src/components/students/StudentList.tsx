@@ -1,7 +1,7 @@
-import { Eye } from 'lucide-react';
-import { Student, StudentLevel } from '@/types/student';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Eye } from "lucide-react";
+import { Student, StudentLevel } from "@/types";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 interface StudentListProps {
   level: StudentLevel;
@@ -32,9 +32,9 @@ export function StudentList({ level, students }: StudentListProps) {
             <div className="flex items-center gap-4">
               <span
                 className={`px-2 py-1 text-sm rounded-full ${
-                  student.status === 'Admis'
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-orange-100 text-orange-700'
+                  student.status === "Admis"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-orange-100 text-orange-700"
                 }`}
               >
                 {student.status}

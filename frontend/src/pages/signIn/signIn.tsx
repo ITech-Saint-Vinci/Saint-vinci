@@ -1,13 +1,19 @@
 import { SignInForm, SignInFormValues } from "@/components/forms/sighnInForm";
 import { useAuth } from "@/hooks/useAuth";
 
-const signInFn = async (credentials: SignInFormValues): Promise<void> => {
+const signInFn = async ({
+  username,
+  password,
+}: SignInFormValues): Promise<void> => {
   const response = await fetch("http://localhost:3001/api/auth/sign-in", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(credentials),
+    body: JSON.stringify({
+      username: username.toLowerCase(),
+      password: password.toLowerCase(),
+    }),
   });
 
   if (!response.ok) {

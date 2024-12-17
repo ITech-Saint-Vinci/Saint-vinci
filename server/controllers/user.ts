@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import type { Request, Response } from "express";
 import { User } from "../models/user";
 import { Types } from "mongoose";
+import { TOKEN_CONSTENT } from "../contansts";
 
 
 type AuthResponse<T> = {
@@ -49,7 +50,6 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     if (!matches) {
       throw new Error("Invalid credentials");
     }
-    console.log("hello world")
     
     const token = createToken(user._id);
     
