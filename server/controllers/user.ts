@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { apiConfig } from "../config";
 import bcrypt from "bcrypt";
 import type { Request, Response } from "express";
-import { Admin } from "../models/admin";
+import { User } from "../models/user";
 import { Types } from "mongoose";
 
 
@@ -40,18 +40,18 @@ const createAuthResponse = <T>(
 export const signIn = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   try {
-    const admin = await Admin.findOne({ username });
+    const user = await User.findOne({ username });
 
-    if (!admin) {
+    if (!user) {
       throw new Error("Invalid credentials");
     }
 
-    const matches = await validatePassword(password, admin.password!);
+    const matches = await validatePassword(password, user.password!);
     if (!matches) {
-      throw new Error();
+      throw new Error("Invalid credentials");
     }
 
-    const token = createToken(admin._id);
+    const token = createToken(user._id);
 
     createAuthResponse(200, { token }, res);
   } catch (error) {
