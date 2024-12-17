@@ -79,7 +79,7 @@ export const validateToken = async (req: Request, res: Response): Promise<void> 
 
     const token = authHeader.split(' ')[1];
 
-    const decoded = jwt.verify(token, apiConfig.auth.jwtSecret);
+    const decoded = jwt.verify(token, apiConfig.auth.jwtSecret) as jwt.JwtPayload;
 
     res.status(200).json({valid: true, data:{
       admin:{
