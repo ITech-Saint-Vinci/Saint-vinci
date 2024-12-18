@@ -1,17 +1,18 @@
 import mongoose from "mongoose";
 
-interface Class {
+export interface ClassType {
   _id?: mongoose.Types.ObjectId;
   name: string,
   order: number;
+  students: Student[]
 }
 
 export interface Student {
   _id?: mongoose.Types.ObjectId;
   firstname: string;
   lastname: string;
-  isRepeating: boolean;
-  classId: Class;
+  isReapeating: boolean;
+  class: ClassType;
   birthdate: string;
 }
 

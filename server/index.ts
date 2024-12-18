@@ -7,9 +7,8 @@ import { apiConfig } from "./config"
 import { authRouter } from "./routes/auth"
 import cors from "cors"
 import { studentsRouter } from "./routes/students"
-import { classesRouter } from "./routes/classes"
 import { teacherRouter } from "./routes/teacher"
-
+// import './seed/students'
 const app = express()
 
 app.use(express.json());
@@ -21,7 +20,6 @@ app.use((req, res, next) => {
 
 app.use("/api/auth", authRouter)
 app.use("/api/students", studentsRouter)
-app.use("/api/classes", classesRouter)
 app.use("/api/teacher", teacherRouter)
 app.use('/api/academicYear', academicYears)
 mongoose.connect(apiConfig.db.mongoUrl).then(() => {

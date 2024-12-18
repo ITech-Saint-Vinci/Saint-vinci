@@ -33,7 +33,7 @@ const createTeachers = async (records: CsvRecord[]): Promise<{ [key: string]: mo
 const createClasses = async (records: CsvRecord[], teachersMap: { [key: string]: mongoose.Types.ObjectId }): Promise<{ [key: string]: mongoose.Types.ObjectId }> => {
   const uniqueNiveaux = [...new Set(records.map(record => record['Niveau']))];
   const classesMap: { [key: string]: mongoose.Types.ObjectId } = {};
-
+  let i = 1
   for (const niveau of uniqueNiveaux) {
     const teacherRecord = records.find(record => record['Niveau'] === niveau);
     
@@ -50,9 +50,10 @@ const createClasses = async (records: CsvRecord[], teachersMap: { [key: string]:
     const classDoc = await Class.create({ 
       name: niveau, 
       teacher: teacherId, 
-      students: [] 
+      students: [] ,
+      order : i
     });
-
+    i+=1
     classesMap[niveau] = classDoc._id;
     console.log(`Class created: ${niveau}`);
   }
