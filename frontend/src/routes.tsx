@@ -3,6 +3,7 @@ import ProtectedRoute from "./components/layout/protectedRoute";
 import Root from "./pages/root/root";
 import { SignIn } from "./pages/signIn/signIn";
 import { MainLayout } from "./components/layout/mainLayout";
+import CloseYear from "./pages/closeYear/closeYear";
 import { UserRole } from "./contants";
 
 export const router = createBrowserRouter([
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
           {
             path: "/",
             element: <Root />,
+          },
+          {
+            path: "/closeYear",
+            element: <CloseYear />,
           },
         ],
       },

@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 
 const ClassesSchema = new mongoose.Schema({
- id: { type: String, required: true, unique: true },
- teacherId: { type: String, required: true },
+ teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
  name: { type: String, required: true },
- academicYearId: { type: String, required: true },
+ order: { type: Number, required: true },
  createdAt: { type: Date, default: Date.now()},
 });
 

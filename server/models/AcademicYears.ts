@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
 const AcademicYearsSchema = new mongoose.Schema({
- id: { type: String, required: true, unique: true },
- year: { type: Number, required: true },
+ year: { type: String, required: true },
  isCurrent: { type: Boolean, default: true},
 });
 

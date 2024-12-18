@@ -40,6 +40,27 @@ const createAuthResponse = <T>(
   res: Response
 ): Response<any, Record<string, any>> => res.status(status).json(data);
 
+export const signUp = async (req: Request, res: Response): Promise<void> => {
+  const { username, password , role} = req.body;
+  try {
+    const user = await User.findOne({ username });
+    if (user) {
+      throw new Error("Invalid credentials");
+    }
+    await User.create({username, password: await hashPassword(password), role})
+    
+    createAuthResponse(201, { message: "User created" }, res);
+  } catch (error) {
+    createAuthResponse(
+      401,
+      {
+        message: error as string,
+      },
+      res
+    );
+  }
+};
+
 export const signIn = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   try {
