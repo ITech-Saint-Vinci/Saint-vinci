@@ -8,8 +8,8 @@ export type CsvRecord =  {
   'Nom Professeur': string;
 }
 
-export const parseCSV = (csvPath: string): CsvRecord[] => {
-  const csvContent = fs.readFileSync(csvPath, 'utf8');
+export const parseCSV = (csvBuffer: Buffer): CsvRecord[] => {
+  const csvContent = csvBuffer.toString('utf8');
   const lines = csvContent.split('\n').filter(line => line.trim() !== '');
   const headers = lines[0].split(',');
 

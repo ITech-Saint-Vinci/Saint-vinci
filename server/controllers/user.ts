@@ -5,6 +5,8 @@ import type { Request, Response } from "express";
 import { User } from "../models/user";
 import { Types } from "mongoose";
 import { TOKEN_CONSTENT } from "../contansts";
+import { userValidation } from "../middleware/authValidation";
+import { z } from "zod";
 
 
 type AuthResponse<T> = {
@@ -107,5 +109,46 @@ export const validateToken = async (req: Request, res: Response): Promise<void> 
       valid: false, 
       error: 'Internal server error' 
     });
+  }
+};
+
+export const userUpdate = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const id = req.user._id;
+  const { username, email, password } = req.body;
+  try {
+    const updateData: Partial<z.infer<typeof userValidation>> = {};
+
+    if (password) {
+      updateData.password = await hashPassword(password);
+    }
+
+    if (username) {
+      updateData.username = username;
+    }
+
+    const user = await User.findOneAndUpdate(
+      { _id: id },
+      { $set: updateData }
+    );
+
+    const token = createToken(user!._id);
+    createAuthResponse<{ email: string }>(
+      200,
+      {
+        message: "sucsessfully updated"
+      },
+      res
+    );
+  } catch (error) {
+    createAuthResponse(
+      401,
+      {
+        message: error as string,
+      },
+      res
+    );
   }
 };
