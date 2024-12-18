@@ -18,6 +18,7 @@ function CloseYear() {
     const back = ()=>{
       navigate("/")
     }
+    
     return <>
     <div className="min-h-screen flex flex-col items-center bg-background ">
     <Header />
@@ -28,12 +29,13 @@ function CloseYear() {
         })}
       </div>
       <div className="flex items-center gap-3">
-        <Button variant="default" onClick={onSubmit} disabled={mutationPatchYear.isLoading}
-          className="bg-destructive hover:bg-destructive-100">Valider
-        </Button>
         <Button variant="default" onClick={back}
           className="bg-emerald-600 hover:bg-emerald-700">Retour
         </Button>
+        <Button variant="default" onClick={onSubmit} disabled={mutationPatchYear.isLoading || mutationOnLoad.data?.students.map((classes)=>classes.students).flat().length ===0}
+          className="bg-destructive hover:bg-destructive-100">Valider
+        </Button>
+        
       </div>
     </main>
   </div></>
