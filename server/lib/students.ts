@@ -91,14 +91,15 @@ export const createClasses = async (records: CsvRecord[], teachersMap: { [key: s
   const classData = splitStudents(records, teachersMap);
 
   const classesMap: { [key: string]: mongoose.Types.ObjectId } = {};
-
+  let i = 1
   for (const { className, teacher, studentsData } of classData) {
     const classDoc = await Class.create({
       name: serializeData(className),
       teacher,
       students: [],
+      order: i
     });
-
+    i+=1
     const studentDocs = await Students.insertMany(
       studentsData.map(student => ({
         ...student,

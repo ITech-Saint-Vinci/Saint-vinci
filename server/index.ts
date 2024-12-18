@@ -1,7 +1,5 @@
 import dotenv from "dotenv"
 dotenv.config()
-import dotenv from "dotenv"
-dotenv.config()
 import express from "express"
 import academicYears from './routes/academicYear'
 import mongoose from "mongoose"
@@ -9,10 +7,8 @@ import { apiConfig } from "./config"
 import { authRouter } from "./routes/auth"
 import cors from "cors"
 import { studentsRouter } from "./routes/students"
-import { studentsRouter } from "./routes/students"
 import { teacherRouter } from "./routes/teacher"
 import { adminRouter } from "./routes/admin"
-
 const app = express()
 
 app.use(express.json());

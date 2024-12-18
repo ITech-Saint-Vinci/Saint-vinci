@@ -28,7 +28,7 @@ function CloseYear() {
         })}
       </div>
       <div className="flex items-center gap-3">
-        <Button variant="default" onClick={onSubmit}
+        <Button variant="default" onClick={onSubmit} disabled={mutationPatchYear.isLoading}
           className="bg-destructive hover:bg-destructive-100">Valider
         </Button>
         <Button variant="default" onClick={back}

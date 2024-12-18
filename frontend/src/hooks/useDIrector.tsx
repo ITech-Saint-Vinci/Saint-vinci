@@ -48,7 +48,8 @@ const useDirector = () => {
     const mutationUpdateStudent :UseMutationResult<ResponsePatch, Error, UpdateStatusData, void>  = useMutation(updateStatusStudent,  {
         onSuccess: ()=>{
         mutationOnLoad.mutate()
-        }, onError: (e)=> onError(e.message, ()=>{})
+        }, onError: (e)=> {
+            onError(e.message, ()=>{})}
     });
     const mutationPatchYear :UseMutationResult<ResponsePatch, Error, GetYearResponse, void>  = useMutation(patchYear, 
         {onSuccess: ()=>{

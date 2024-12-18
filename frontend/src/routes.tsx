@@ -25,6 +25,17 @@ export const router = createBrowserRouter([
             path: "/",
             element: <Root />,
           },
+        
+        ],
+      },
+
+      {
+        element: (
+          <ProtectedRoute
+            allowedRoles={[UserRole.Director]}
+          />
+        ),
+        children: [
           {
             path: "/closeYear",
             element: <CloseYear />,

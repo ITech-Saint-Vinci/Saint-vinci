@@ -1,5 +1,6 @@
 import { ResponsePatch, StudentsGetResponse, UpdateStatusData } from "@/types";
 import { useAuth } from "./useAuth";
+import { z } from "zod";
 
 const useStudents = ()=>{
     const {token}= useAuth()
@@ -20,8 +21,12 @@ const useStudents = ()=>{
       };
 
       const updateStatusStudent = async (data: UpdateStatusData): Promise<ResponsePatch>=> {
-        console.log(data);
-        
+        try {
+        const updateStudentSchema = z.object({
+          studentId: z.string().nonempty("La demande n'a pas pu aboutir !"),
+          isReapeating: z.boolean({invalid_type_error: "La demande n'a pas pu aboutir !"}),
+        });
+        updateStudentSchema.parse(data)
         const response = await fetch("http://localhost:3001/api/students", {
           method: "PUT",
           headers: {
@@ -36,6 +41,12 @@ const useStudents = ()=>{
         }
       
         return response.json();
+      } catch (error: any) {
+          if(error instanceof z.ZodError){
+          throw new Error(JSON.parse(error.toString()).map((e: any)=>e.message).flat().join(' '))
+          }
+          throw new error
+      }
       };
       return {updateStatusStudent, getStudentsRepeating}
 }
