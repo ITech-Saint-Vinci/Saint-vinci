@@ -81,7 +81,7 @@ const createTeachers = async (records: CsvRecord[]): Promise<{ [key: string]: mo
     try {
       const teacherData = {
         username: serializeData(teacherName),
-        password: '$2a$12$E9jdlUb.PcRXReTmca8Pjugms2IdfoSrm5BJdsEV/IAGPQymIDRAW',
+        password: 'password123',
         role: 'teacher',
       };
       const teacher = await User.create(teacherData);
