@@ -16,11 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/sign-in" replace />;
   }
 
-  if (!role) {
-    return <Navigate to="/sign-in" replace />;
-  }
-
-  if (!allowedRoles.includes(role)) {
+  if (role && !allowedRoles.includes(role)) {
     return <Navigate to={redirection ? redirection : "/"} replace />;
   }
 

@@ -30,8 +30,8 @@ const validateTokenAPI = async (token: string) => {
 
 export const useAuth = <T,>(mutationFn?: MutationFunction<unknown, T>) => {
   const navigate = useNavigate();
-  const token = getStored("auth_token");
   const role = getStored("role");
+  const token = getStored("auth_token");
 
   useQuery({
     queryKey: ["token-validation", token],
@@ -40,8 +40,8 @@ export const useAuth = <T,>(mutationFn?: MutationFunction<unknown, T>) => {
     retry: 1,
     staleTime: 1000 * 60 * 5,
     onError: () => {
-      removeStored("auth_token");
       removeStored("role");
+      removeStored("auth_token");
       queryClient.setQueryData(["auth"], null);
     },
   });
