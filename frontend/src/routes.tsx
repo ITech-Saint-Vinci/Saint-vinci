@@ -3,6 +3,7 @@ import ProtectedRoute from "./components/layout/protectedRoute";
 import Root from "./pages/root/root";
 import { SignIn } from "./pages/signIn/signIn";
 import { MainLayout } from "./components/layout/mainLayout";
+import { UserRole } from "./contants";
 
 export const router = createBrowserRouter([
   {
@@ -13,7 +14,11 @@ export const router = createBrowserRouter([
         element: <SignIn />,
       },
       {
-        element: <ProtectedRoute />,
+        element: (
+          <ProtectedRoute
+            allowedRoles={[UserRole.Teacher, UserRole.Admin, UserRole.Director]}
+          />
+        ),
         children: [
           {
             path: "/",
