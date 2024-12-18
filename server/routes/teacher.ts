@@ -9,4 +9,4 @@ teacherRouter.get("/", requireAuth, requireAnyRole([UserRole.Director, UserRole.
 
 teacherRouter.get("/classes", requireAuth, requireAuthTeacher, getClasses)
 
-teacherRouter.put("/", requireAuth, requireAuthTeacher, updateStudent)
+teacherRouter.put("/", requireAuth, requireAnyRole([UserRole.Director, UserRole.Teacher]), updateStudent)
