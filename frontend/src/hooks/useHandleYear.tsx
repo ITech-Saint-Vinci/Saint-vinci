@@ -1,11 +1,14 @@
 import { GetYearResponse, ResponsePatch } from "@/types";
+import { useAuth } from "./useAuth";
 
 const useHandleYear = () => {
+    const {token}= useAuth()
     const getCurrentYear = async (): Promise<GetYearResponse>=> {
         const response = await fetch("http://localhost:3001/api/academicYear", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           }
         });
       
@@ -21,6 +24,7 @@ const useHandleYear = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(data)
       });

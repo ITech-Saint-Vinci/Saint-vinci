@@ -1,11 +1,14 @@
 import { ResponsePatch, StudentsGetResponse, UpdateStatusData } from "@/types";
+import { useAuth } from "./useAuth";
 
 const useStudents = ()=>{
+    const {token}= useAuth()
     const getStudentsRepeating = async (): Promise<StudentsGetResponse[]>=> {
         const response = await fetch("http://localhost:3001/api/students/repeating", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           }
         });
       
@@ -23,6 +26,7 @@ const useStudents = ()=>{
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           },
           body: JSON.stringify(data)
         });
