@@ -56,15 +56,10 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     
     const token = createToken(user._id);
     
-    createAuthResponse(200, { token }, res);
+    res.json({token});
   } catch (error) {
-    createAuthResponse(
-      401,
-      {
-        message: error as string,
-      },
-      res
-    );
+    const err = error as Error
+    res.status(401).json({ message: err.message as string})
   }
 };
 
@@ -137,20 +132,9 @@ export const userUpdate = async (
     );
 
     const token = createToken(user!._id);
-    createAuthResponse<{ email: string }>(
-      200,
-      {
-        message: "sucsessfully updated"
-      },
-      res
-    );
+    res.json({message: "sucsessfully updated"})
   } catch (error) {
-    createAuthResponse(
-      401,
-      {
-        message: error as string,
-      },
-      res
-    );
+    const err = error as Error
+    res.status(401).json({message: err.message})
   }
 };
