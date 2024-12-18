@@ -11,3 +11,7 @@ export const enum UserRole {
   Teacher = 'teacher',
   Director = 'director'
 }
+
+export const MAX_STUDENTS = 25
+
+export const MAX_CLASSES = 8
