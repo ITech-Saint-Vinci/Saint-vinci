@@ -1,6 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { StudentAccordion } from "@/components/students/StudentAccordion";
-import { Student } from "@/types";
+import { Button } from '@/components/ui/button';
+import { StudentAccordion } from '@/components/students/StudentAccordion';
+import { Student } from '@/types/student';
+import { useNavigate } from 'react-router';
 
 const mockStudents: Student[] = [
   {
@@ -22,6 +23,7 @@ const mockStudents: Student[] = [
 ];
 
 export function SchoolYear() {
+  const navigate = useNavigate()
   return (
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-8">
@@ -29,6 +31,9 @@ export function SchoolYear() {
         <Button
           variant="default"
           className="bg-emerald-600 hover:bg-emerald-700"
+          onClick={()=>{
+            navigate('/closeYear')
+          }}
         >
           Clôturer l'année
         </Button>

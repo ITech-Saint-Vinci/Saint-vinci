@@ -27,16 +27,16 @@ export function StudentAccordion({ level, students }: StudentAccordionProps) {
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-2 pt-2">
-            {students.map((student) => (
+            {students.map((student, index) => (
               <div
-                key={student.id}
+                key={index}
                 className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary">
-                    {student.firstName[0]}
+                    {student.firstname[0]}
                   </div>
-                  <span>{`${student.firstName} ${student.lastName}`}</span>
+                  <span>{`${student.firstname} ${student.lastname}`}</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <span
