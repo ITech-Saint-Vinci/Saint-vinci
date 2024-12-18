@@ -1,4 +1,4 @@
-import { Eye } from "lucide-react";
+import { Eye, X } from "lucide-react";
 import { Student, StudentLevel } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,9 +11,11 @@ import {
 interface StudentAccordionProps {
   level: StudentLevel;
   students: Student[];
+  onClickButton?: (id: string)=> void;
+  director?: Boolean
 }
 
-export function StudentAccordion({ level, students }: StudentAccordionProps) {
+export function StudentAccordion({ level, students, onClickButton , director }: StudentAccordionProps) {
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value={level}>
@@ -34,22 +36,22 @@ export function StudentAccordion({ level, students }: StudentAccordionProps) {
               >
                 <div className="flex items-center gap-3">
                   <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary">
-                    {student.firstname[0]}
+                    {student.firstName[0]}
                   </div>
-                  <span>{`${student.firstname} ${student.lastname}`}</span>
+                  <span>{`${student.firstName} ${student.lastName}`}</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <span
                     className={`px-2 py-1 text-sm rounded-full ${
-                      student.status === "Admis"
+                      !student.isReapeating
                         ? "bg-green-100 text-green-700"
                         : "bg-orange-100 text-orange-700"
                     }`}
                   >
-                    {student.status}
+                    {!student.isReapeating ?"Admis" : "Redoublant"}
                   </span>
-                  <Button variant="ghost" size="icon">
-                    <Eye className="h-4 w-4" />
+                  <Button variant="ghost" size="icon" onClick={()=>{if(onClickButton)onClickButton(student._id)}}>
+                   {director ? <X  /> : <Eye className="h-4 w-4" />}
                   </Button>
                 </div>
               </div>

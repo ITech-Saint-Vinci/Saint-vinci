@@ -1,42 +1,67 @@
-import Classes from "../models/Classes";
-import Students from "../models/Students";
 import {NextFunction, Response, Request } from "express";
 import AcademicYears from "../models/AcademicYears";
-import Notifications from "../models/Notifications";
+import Notifications from "../models/notifications";
 import { User } from "../models/user";
-import { Student } from "../types/students";
+import {  Student } from "../types/students";
+import { Students } from "../models/student";
+import { Class } from "../models/class";
+
 async function promoteStudents() {
-    try {
-      const students : Student[] = await Students.find().populate('classId', 'name order');
-      const classes = await Classes.find().sort({ order: 1 });
-  
-      for (let student of students) {
-        if(!student.isRepeating){
-
-        const currentClass = student.classId;
-        const nextClass = classes.find(
-          (cls) => cls.order === currentClass.order + 1
+  const students : Student[] = await Students.find().populate('class', 'name order');
+  const classes = await Class.find().sort({ order: 1 });
+  const newClasses : Record<string, Student[]> = classes.reduce((acc : Record<string, Student[]> , next) : Record<string, Student[]> =>{
+    acc[next._id.toString()] = []
+    return acc
+  }, {})
+  const updateOperations = [];
+  const deleteOperations = [];
+  for (let student of students) {
+    const currentClass = student.class;
+    const currentClassId = currentClass ? currentClass._id?.toString() : null;
+    
+    if (!student.isReapeating) {
+        const nextClass =  classes.find(
+          (cls) => cls.order=== currentClass.order+ 1 
         );
-  
-        if (nextClass) {
-          await Students.updateOne({_id: student._id}, {classId: nextClass._id})
-        } else {
-          await Students.deleteOne({_id: student._id})
+      if (nextClass &&nextClass._id) {
+        const nextClassId = nextClass._id.toString();
+        if (newClasses[nextClassId]) {
+          newClasses[nextClassId].push(student);
         }
-      }else{
-        await Students.updateOne({_id: student._id}, {isRepeating: false})
 
+        updateOperations.push(Students.updateOne(
+          { _id: student._id },
+          { class: nextClass._id }
+        ));
+
+      } else {
+        deleteOperations.push(Students.deleteOne({ _id: student._id }));
       }
-    }
-    } catch (error) {
-      throw new Error("Problème lors de la promotion des classes.");
+
+   } else {
+     updateOperations.push(Students.updateOne(
+       { _id: student._id },
+       { isReapeating: false }
+     ));
+
+     if (currentClassId) {
+       if (newClasses[currentClassId]) {
+         newClasses[currentClassId].push(student);
+       }
+     }
     }
   }
+  for (const classe of classes) {
+    updateOperations.push(Class.updateOne({_id: classe._id}, {$set: {students: newClasses[classe._id.toString()]}}))
+  }
+
+  await Promise.all([...updateOperations, ...deleteOperations]);
+  return newClasses;
+}
 
 type RequestBody = {year: string}
 export const updateYear =  async (req: Request<{},{},RequestBody>,res: Response, next:NextFunction )=>{
     try{
-        
         const yearStart : number = parseInt(req.body.year.split("-")[0]) 
         const yearEnd : number = parseInt(req.body.year.split("-")[1]) 
         if(!yearStart || !yearEnd){
@@ -53,7 +78,7 @@ export const updateYear =  async (req: Request<{},{},RequestBody>,res: Response,
         })
         await Notifications.insertMany(notif)
         res.status(200).json({message: "L'année a été cloturé. Les professeurs ont été notifiés."})
-    }catch(e){
+      }catch(e){
         res.status(500).json({message: "Erreur Serveur"})
 
     }

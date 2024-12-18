@@ -1,23 +1,21 @@
 import { Button } from '@/components/ui/button';
 import { StudentAccordion } from '@/components/students/StudentAccordion';
-import { Student } from '@/types/student';
+import { Student } from '@/types';
 import { useNavigate } from 'react-router';
 
 const mockStudents: Student[] = [
   {
-    id: "1",
+    _id: "1",
     firstName: "John",
     lastName: "Doe",
-    status: "Admis",
-    level: "CM2",
+    isReapeating: false,
     birthDate: "2015-01-01",
   },
   {
-    id: "2",
+    _id: "2",
     firstName: "Jane",
     lastName: "Smith",
-    status: "Admis",
-    level: "CM2",
+    isReapeating: false,
     birthDate: "2015-03-15",
   },
 ];

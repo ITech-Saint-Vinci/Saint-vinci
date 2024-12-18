@@ -7,7 +7,6 @@ import { apiConfig } from "./config"
 import { authRouter } from "./routes/auth"
 import cors from "cors"
 import { studentsRouter } from "./routes/students"
-import { classesRouter } from "./routes/classes"
 import { teacherRouter } from "./routes/teacher"
 import { adminRouter } from "./routes/admin"
 
@@ -22,7 +21,6 @@ app.use((req, res, next) => {
 
 app.use("/api/auth", authRouter)
 app.use("/api/students", studentsRouter)
-app.use("/api/classes", classesRouter)
 app.use("/api/teacher", teacherRouter)
 app.use("/api/admin", adminRouter)
 app.use('/api/academicYear', academicYears)
