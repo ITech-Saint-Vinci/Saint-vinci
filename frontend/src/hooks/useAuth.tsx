@@ -1,11 +1,7 @@
 import { queryClient } from "@/App";
+import { getStored, removeStored, setStored } from "@/lib/utils";
 import { MutationFunction, useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
-
-const getStoredToken = () => localStorage.getItem("auth_token");
-const setStoredToken = (token: string) =>
-  localStorage.setItem("auth_token", token);
-const removeStoredToken = () => localStorage.removeItem("auth_token");
 
 const validateTokenAPI = async (token: string) => {
   try {
@@ -24,7 +20,9 @@ const validateTokenAPI = async (token: string) => {
       throw new Error("Token validation failed");
     }
 
-    return await response.json();
+    const json = await response.json();
+    setStored("role", json.data.role);
+    return json;
   } catch (error) {
     throw error;
   }
@@ -32,7 +30,8 @@ const validateTokenAPI = async (token: string) => {
 
 export const useAuth = <T,>(mutationFn?: MutationFunction<unknown, T>) => {
   const navigate = useNavigate();
-  const token = getStoredToken();
+  const token = getStored("auth_token");
+  const role = getStored("role");
 
   useQuery({
     queryKey: ["token-validation", token],
@@ -41,7 +40,8 @@ export const useAuth = <T,>(mutationFn?: MutationFunction<unknown, T>) => {
     retry: 1,
     staleTime: 1000 * 60 * 5,
     onError: () => {
-      removeStoredToken();
+      removeStored("auth_token");
+      removeStored("role");
       queryClient.setQueryData(["auth"], null);
     },
   });
@@ -49,20 +49,22 @@ export const useAuth = <T,>(mutationFn?: MutationFunction<unknown, T>) => {
   const authMutation = useMutation({
     mutationFn: mutationFn,
     onSuccess: (data) => {
-      const authData = data as { token: string };
-      setStoredToken(authData.token);
+      const authData = data as { token: string; role: string };
+      setStored("auth_token", authData.token);
       queryClient.setQueryData(["auth"], data);
       queryClient.invalidateQueries({ queryKey: ["user-data"] });
       navigate("/");
     },
     onError: (_error) => {
-      removeStoredToken();
+      removeStored("auth_token");
+      removeStored("role");
       queryClient.setQueryData(["auth"], null);
     },
   });
 
   const signOut = () => {
-    removeStoredToken();
+    removeStored("auth_token");
+    removeStored("role");
     queryClient.setQueryData(["auth"], null);
     queryClient.invalidateQueries();
   };
@@ -71,6 +73,7 @@ export const useAuth = <T,>(mutationFn?: MutationFunction<unknown, T>) => {
     mutate: authMutation.mutate,
     signOut,
     token,
+    role,
     isLoading: authMutation.isLoading,
     error: authMutation.error,
     isAuthenticated: !!token,

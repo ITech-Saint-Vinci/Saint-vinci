@@ -82,11 +82,16 @@ export const validateToken = async (req: Request, res: Response): Promise<void> 
     const token = authHeader.split(' ')[1];
 
     const decoded = jwt.verify(token, apiConfig.auth.jwtSecret) as jwt.JwtPayload;
+    const user = await User.findById(decoded._id)
+
+    if(!user){
+      res.status(404).json({message: "invalid token"})
+      return
+    }
 
     res.status(200).json({valid: true, data:{
-      admin:{
-        _id: decoded._id
-      }
+        _id: decoded._id,
+        role: user?.role
     }})
   } catch (error) {
 
@@ -117,16 +122,12 @@ export const userUpdate = async (
   res: Response
 ): Promise<void> => {
   const id = req.user._id;
-  const { username, email, password } = req.body;
+  const { password } = req.body;
   try {
     const updateData: Partial<z.infer<typeof userValidation>> = {};
 
     if (password) {
       updateData.password = await hashPassword(password);
-    }
-
-    if (username) {
-      updateData.username = username;
     }
 
     const user = await User.findOneAndUpdate(

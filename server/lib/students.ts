@@ -3,6 +3,7 @@ import { CsvRecord, serializeData } from "./utils";
 import { User } from "../models/user";
 import { Class } from "../models/class";
 import { Students } from "../models/student";
+import { apiConfig } from "../config";
 
 type Students = {
   firstName: string;
@@ -71,7 +72,7 @@ export const createTeachers = async (records: CsvRecord[]): Promise<{ [key: stri
     try {
       const teacherData = {
         username: serializeData(teacherName),
-        password: '$2a$12$E9jdlUb.PcRXReTmca8Pjugms2IdfoSrm5BJdsEV/IAGPQymIDRAW',
+        password: apiConfig.auth.tOrginalPassword,
         role: 'teacher',
       };
       const teacher = await User.create(teacherData);
