@@ -7,6 +7,7 @@ export const authRouter = express.Router();
 
 authRouter.post("/sign-in", authValidation, signIn);
 
+
 authRouter.post("/edit", requireAuth, userUpdate);
 
 authRouter.post("/validate-token", validateToken);
