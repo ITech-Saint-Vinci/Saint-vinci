@@ -17,7 +17,7 @@ const useHandleYear = () => {
           throw new Error("L'année n'a pas été récupéré");
         }
       
-        return response.json();
+        return await response.json();
       };
       
     const patchYear = async (data: GetYearResponse): Promise<ResponsePatch>=> {
@@ -39,7 +39,7 @@ const useHandleYear = () => {
           throw new Error("Il y a eu une erreur lors de la clôture de l'année !");
         }
     
-      return response.json();
+      return await response.json();
       } catch (error: any) {
           if(error instanceof z.ZodError){
             throw new Error(JSON.parse(error.toString()).map((e: any)=>e.message).flat().join(' '))

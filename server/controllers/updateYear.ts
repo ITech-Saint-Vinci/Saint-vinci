@@ -1,13 +1,13 @@
 import {NextFunction, Response, Request } from "express";
-import AcademicYears from "../models/AcademicYears";
+import AcademicYears from "../models/academicYears";
 import Notifications from "../models/notifications";
 import { User } from "../models/user";
-import {  Student } from "../types/students";
+import {  Student } from "../interface/students";
 import { Students } from "../models/student";
 import { Class } from "../models/class";
 
 async function promoteStudents() {
-  const students : Student[] = await Students.find().populate('class', 'name order');
+  const students : Student[] = await Students.find().populate('class', 'name order') as unknown as Student[];
   const classes = await Class.find().sort({ order: 1 });
   const newClasses : Record<string, Student[]> = classes.reduce((acc : Record<string, Student[]> , next) : Record<string, Student[]> =>{
     acc[next._id.toString()] = []

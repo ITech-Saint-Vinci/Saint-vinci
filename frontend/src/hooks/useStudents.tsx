@@ -17,7 +17,7 @@ const useStudents = ()=>{
           throw new Error("Les élèves n'ont pas pu être récupérer !");
         }
       
-        return response.json();
+        return await response.json();
       };
 
       const updateStatusStudent = async (data: UpdateStatusData): Promise<ResponsePatch>=> {
@@ -40,7 +40,7 @@ const useStudents = ()=>{
           throw new Error("Il y a eu une erreur lors de la clôture de l'année !");
         }
       
-        return response.json();
+        return await  response.json();
       } catch (error: any) {
           if(error instanceof z.ZodError){
           throw new Error(JSON.parse(error.toString()).map((e: any)=>e.message).flat().join(' '))

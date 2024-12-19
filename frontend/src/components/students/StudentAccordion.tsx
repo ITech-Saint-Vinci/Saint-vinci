@@ -7,15 +7,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useAuth } from "@/hooks/useAuth";
+import { UserRole } from "@/contants";
 
 interface StudentAccordionProps {
   level: StudentLevel;
   students: Student[];
   onClickButton?: (id: string)=> void;
-  director?: Boolean
 }
 
-export function StudentAccordion({ level, students, onClickButton , director }: StudentAccordionProps) {
+export function StudentAccordion({ level, students, onClickButton  }: StudentAccordionProps) {
+  const {role} = useAuth()
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value={level}>
@@ -50,8 +52,8 @@ export function StudentAccordion({ level, students, onClickButton , director }: 
                   >
                     {!student.isReapeating ?"Admis" : "Redoublant"}
                   </span>
-                  <Button variant="ghost" size="icon" onClick={()=>{if(onClickButton)onClickButton(student._id)}}>
-                   {director ? <X  /> : <Eye className="h-4 w-4" />}
+                  <Button variant="ghost" size="icon" onClick={()=>onClickButton && onClickButton(student._id)}>
+                   {role === UserRole.Director ? <X  /> : <Eye className="h-4 w-4" />}
                   </Button>
                 </div>
               </div>

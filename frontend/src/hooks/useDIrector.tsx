@@ -1,18 +1,18 @@
-import React, { ReactElement } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import useHandleYear from './useHandleYear'
 import useStudents from './useStudents'
 import { GetYearResponse, MutationOnLoad, ResponsePatch, StudentsGetResponse, UpdateStatusData } from '@/types'
 import { useMutation, UseMutationResult } from '@tanstack/react-query'
 import { ToastAction } from "@/components/ui/toast"
-import { toast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/useToast";
 
 type VariantToastProps = "default" | "success" | "destructive"
 
 const useDirector = () => {
-    const [initialSet , setInitialSet] = React.useState(false)
+    const [initialSet , setInitialSet] = useState(false)
     const {getCurrentYear, patchYear} = useHandleYear()
     const {getStudentsRepeating, updateStatusStudent} = useStudents()
-    const [allStudents, setAllStudents] = React.useState<StudentsGetResponse[]>([])
+    const [allStudents, setAllStudents] = useState<StudentsGetResponse[]>([])
     const onLoad = async ()=>{
         const [year, dataStudents] = await Promise.all( [getCurrentYear(), getStudentsRepeating()]) 
         return {year, students: dataStudents}
@@ -20,7 +20,7 @@ const useDirector = () => {
       const generateToast  = (variant : VariantToastProps, message: ReactElement| string, description: string, action: any) =>{
         return toast({
             variant: variant,
-            title: message,
+            title: message as string,
             description: description,
             action: <ToastAction altText="Réessayer" onClick={action}>Réessayer</ToastAction>,
           })
@@ -60,13 +60,13 @@ const useDirector = () => {
         onError: (e)=> onError(e.message, ()=>{}),
     });
     
-    React.useEffect(()=>{
+    useEffect(()=>{
        mutationOnLoad.mutate()
        return ()=>{
         toast({}).dismiss()
        }
     },[])
-    React.useEffect(()=>{
+    useEffect(()=>{
         if ((mutationOnLoad.isLoading && !initialSet)|| mutationPatchYear.isLoading ) {
             generateToast("default", <div className="flex items-center gap-2.5"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"/>En attente des données...</div>, "", "")
         }
