@@ -76,3 +76,32 @@ export const handleCSVUpload = async (req: Request, res: Response): Promise<void
     res.status(500).json({ message: "Internal server error" });
   }
 }; 
+
+export const getClasses = async (req: Request, res: Response): Promise<void> =>{
+    try{
+        const classData = await Class.find({})
+        
+        res.status(200).json({data: classData})
+    }catch(error){
+        res.status(500).json({error: "Internal server error"})
+        
+    }
+}
+
+export const postStudent = async (req: Request, res: Response): Promise<void> =>{
+    try{
+        const {firstName, lastName, birthDate, classes} = req.body
+        const student = await Students.findOne({firstName, lastName, birthdate:birthDate, class:classes})
+        if (student) {
+            res.status(400).json({message: "L'étudiant existe déjà"})
+            return 
+        } 
+
+        await Students.create({firstName, lastName, birthdate:birthDate, class:classes})
+        
+        res.status(200).json({message:"L'étudiant a été bien créé !"})
+    }catch(error){
+        res.status(500).json({error: "Internal server error"})
+        
+    }
+}

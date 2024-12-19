@@ -20,11 +20,11 @@ export const router = createBrowserRouter([
           <ProtectedRoute
             allowedRoles={[UserRole.Teacher, UserRole.Admin, UserRole.Director]}
           />
-        ),
+        ), 
         children: [
           {
             path: "/",
-            element: <Root />,
+            element: <Root />, 
           },
           {
             path: "/students",

@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { UserRole } from '@/contants';
 import { useStudents } from "@/hooks/useStudents";
 import { Spinner } from "../loading/spinner";
+import { InscriptionForm } from "../forms/inscriptionForm";
 
 
 export function SchoolYear() {
@@ -18,6 +19,7 @@ export function SchoolYear() {
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold">Année 2024-2025</h2>
+        <div className="flex items-center justify-between space-x-4"> 
         {role === UserRole.Director && 
         <Button
           variant="default"
@@ -29,6 +31,11 @@ export function SchoolYear() {
           Clôturer l'année
         </Button>
         }
+        {role === UserRole.Admin &&
+        <InscriptionForm/>
+      }
+        </div>
+        
       </div>
 
       <div className="space-y-4">
