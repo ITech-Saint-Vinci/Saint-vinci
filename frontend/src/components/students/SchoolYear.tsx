@@ -9,11 +9,11 @@ import { Spinner } from "../loading/spinner";
 
 export function SchoolYear() {
   const { data : students, isLoading } = useStudents();
-
-  if(isLoading) return <Spinner />
-
   const navigate = useNavigate()
   const {role}= useAuth()
+  if(isLoading) return <Spinner />
+
+  
   return (
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-8">
@@ -32,13 +32,13 @@ export function SchoolYear() {
       </div>
 
       <div className="space-y-4">
-      {
+      {/* {
             
               students!.data.map((student) => (
                 <StudentAccordion student={student} />
                 
               ))
-            }
+          } */}
         
       </div>
     </div>
