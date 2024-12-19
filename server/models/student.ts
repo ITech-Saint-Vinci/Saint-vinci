@@ -6,7 +6,6 @@ export const Students = model(
     firstName: {
       type: String,
       require: true,
-      unique: true,
     },
     lastName: {
       type: String,

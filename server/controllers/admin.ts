@@ -37,6 +37,16 @@ export const addAStudent = async (
 
     const { firstName, lastName, birthdate } = parsedBody.data;
 
+    const student = await Students.findOne({
+      firstName,
+      lastName,
+      birthdate,
+    });
+
+    if (!student) {
+      throw new Error(`Student ${firstName} ${lastName} not found`);
+    }
+
     const newStudent = await Students.create({
       firstName,
       lastName,
