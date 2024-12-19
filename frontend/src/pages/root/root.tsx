@@ -1,7 +1,6 @@
 import { Header } from '@/components/layout/header';
 import { SchoolYear } from '@/components/students/SchoolYear';
 import { ThemeProvider } from '@/components/theme-provider';
-
 function Root() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">

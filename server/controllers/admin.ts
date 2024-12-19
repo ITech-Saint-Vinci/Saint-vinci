@@ -75,9 +75,7 @@ export const handleCSVUpload = async (req: Request, res: Response): Promise<void
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-}; import { Request, Response } from "express";
-import { Class } from "../models/class";
-import { Students } from "../models/student";
+}; 
 
 export const getClasses = async (req: Request, res: Response): Promise<void> =>{
     try{
@@ -101,7 +99,7 @@ export const postStudent = async (req: Request, res: Response): Promise<void> =>
 
         await Students.create({firstName, lastName, birthdate:birthDate, class:classes})
         
-        res.status(200).json({message:"L'étudiante a été bien créer"})
+        res.status(200).json({message:"L'étudiant a été bien créé !"})
     }catch(error){
         res.status(500).json({error: "Internal server error"})
         

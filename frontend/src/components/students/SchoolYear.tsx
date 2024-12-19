@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { StudentAccordion } from "@/components/students/StudentAccordion";
 import { Student } from "@/types";
+import { InscriptionForm } from "../forms/inscriptionForm";
 
 const mockStudents: Student[] = [
   {
@@ -32,6 +33,7 @@ export function SchoolYear() {
         >
           Clôturer l'année
         </Button>
+        <InscriptionForm/>
       </div>
 
       <div className="space-y-4">

@@ -35,18 +35,21 @@ export const InscriptionForm = ({ }) => {
         },
     });
 
-    const { classes, onSubmit, error } = useInscription()
+    const { classes, onSubmit, error, valid } = useInscription()
 
     console.log(form.formState.errors)
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" className="sm:max-w-[25%]">Ajouter élève</Button>
+                <Button variant="default" className="bg-emerald-600 hover:bg-emerald-700">Ajouter élève</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 {error ?
-                    <div> {error} </div> :null }
+                    <div className="text-red-700"> {error} </div> : null}
+
+                {valid ?
+                    <div className="text-emerald-600"> {valid} </div> : null}
                 <FormProvider {...form}>
                     <Form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
                         <div className=" gap-4 py-4">
@@ -106,7 +109,7 @@ export const InscriptionForm = ({ }) => {
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button type="submit">Ajouter</Button>
+                            <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700" >Ajouter</Button>
                         </DialogFooter>            
                         </Form>
                 </FormProvider>

@@ -4,6 +4,7 @@ import { InscriptionFormValues } from "@/components/forms/inscriptionForm";
 const useInscription = () => {
     const [classes, updateClasses] = useState([])
     const [error, setError] = useState("")
+    const [valid, setValid] = useState("")
 
     const getClass = async () => {
     try {
@@ -74,13 +75,14 @@ const useInscription = () => {
         try {
             const result = await inscriptionStudent(values) 
             console.log(result)
+            setValid(result.message)
         } catch (error) {
             console.log("error")
             setError(error.message)
         }
     }
 
-    return {classes, onSubmit, error}; 
+    return {classes, onSubmit, error, valid}; 
 
 };
 
