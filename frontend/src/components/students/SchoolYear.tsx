@@ -1,25 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { StudentAccordion } from "@/components/students/StudentAccordion";
-import { Student } from "@/types";
 
-const mockStudents: Student[] = [
-  {
-    id: "1",
-    firstName: "John",
-    lastName: "Doe",
-    status: "Admis",
-    level: "CM2",
-    birthDate: "2015-01-01",
-  },
-  {
-    id: "2",
-    firstName: "Jane",
-    lastName: "Smith",
-    status: "Admis",
-    level: "CM2",
-    birthDate: "2015-03-15",
-  },
-];
 
 export function SchoolYear() {
   return (
@@ -35,7 +16,7 @@ export function SchoolYear() {
       </div>
 
       <div className="space-y-4">
-        <StudentAccordion level="CM2" students={mockStudents} />
+        <StudentAccordion level="CM2" students={[]} />
         <StudentAccordion level="CM1" students={[]} />
         <StudentAccordion level="CE2" students={[]} />
         <StudentAccordion level="CE1" students={[]} />

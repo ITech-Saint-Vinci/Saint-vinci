@@ -5,13 +5,14 @@ export type BaseFormProps<T> = {
 
 export type StudentStatus = 'Admis' | 'Redoublant';
 
-export type StudentLevel = 'CP' | 'CE1' | 'CE2' | 'CM1' | 'CM2';
+export type StudentLevel = '1ere Section' | '2e Section' | '3e Section' | 'CP' | 'CE1' | 'CE2' | 'CM1' | 'CM2';
 
 export type Student = {
-  id: string;
+  _id: string;
   firstName: string;
   lastName: string;
   status: StudentStatus;
   level: StudentLevel;
-  birthDate: string;
+  birthdate: string;
+  class: {name: string}
 }
