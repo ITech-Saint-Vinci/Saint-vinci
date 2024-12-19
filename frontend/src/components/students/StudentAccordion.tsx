@@ -1,5 +1,5 @@
 import { Eye, X } from "lucide-react";
-import { Student, StudentLevel } from "@/types";
+import { Student } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -11,13 +11,17 @@ import { useAuth } from "@/hooks/useAuth";
 import { UserRole } from "@/contants";
 
 interface StudentAccordionProps {
-  level: StudentLevel;
+  level: string;
   students: Student[];
-  onClickButton?: (id: string)=> void;
+  onClickButton?: (id: string) => void;
 }
 
-export function StudentAccordion({ level, students, onClickButton  }: StudentAccordionProps) {
-  const {role} = useAuth()
+export function StudentAccordion({
+  level,
+  students,
+  onClickButton,
+}: StudentAccordionProps) {
+  const { role, isAuthenticated } = useAuth();
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value={level}>
@@ -43,17 +47,28 @@ export function StudentAccordion({ level, students, onClickButton  }: StudentAcc
                   <span>{`${student.firstName} ${student.lastName}`}</span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span
-                    className={`px-2 py-1 text-sm rounded-full ${
-                      !student.isReapeating
-                        ? "bg-green-100 text-green-700"
-                        : "bg-orange-100 text-orange-700"
-                    }`}
+                  {isAuthenticated && (
+                    <span
+                      className={`px-2 py-1 text-sm rounded-full ${
+                        !student.isRepeating
+                          ? "bg-green-100 text-green-700"
+                          : "bg-orange-100 text-orange-700"
+                      }`}
+                    >
+                      {!student.isRepeating ? "Admis" : "Redoublant"}
+                    </span>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => onClickButton && onClickButton(student._id)}
                   >
-                    {!student.isReapeating ?"Admis" : "Redoublant"}
-                  </span>
-                  <Button variant="ghost" size="icon" onClick={()=>onClickButton && onClickButton(student._id)}>
-                   {role === UserRole.Director ? <X  /> : <Eye className="h-4 w-4" />}
+                    {isAuthenticated &&
+                      (role === UserRole.Director ? (
+                        <X />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      ))}
                   </Button>
                 </div>
               </div>

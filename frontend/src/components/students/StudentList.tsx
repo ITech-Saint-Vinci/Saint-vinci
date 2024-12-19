@@ -1,46 +1,55 @@
 import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Student } from "@/types";
 
-interface StudentListProps {
-  _id?: string;
-  firstName: string;
-  lastName: string;
-  birthday: Date;
-  status: string;
-  class:{name: string;}
+interface ClassInfo {
+  name: string;
 }
 
-export const StudentList = ({_id, firstName, lastName, birthday, status }: StudentListProps) =>(
+interface StudentCardProps {
+  students: Student[];
+  classData: ClassInfo;
+}
+
+export const StudentList = ({ students, classData }: StudentCardProps) => {
+  return (
     <Card className="p-4 mb-4">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold">{birthday.getDay()}-{birthday.getMonth()}-{birthday.getFullYear()}</h2>
+        <h2 className="text-xl font-semibold">{classData.name}</h2>
+        <Button variant="ghost" size="icon">
+          <Eye className="h-4 w-4" />
+        </Button>
       </div>
       <div className="space-y-2">
+        {students.map((student) => (
           <div
+            key={student._id}
             className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
           >
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary">
-                {}
+                {student.firstName[0]}
               </div>
-              <span>{`${firstName} ${lastName}`}</span>
+              <span>{`${student.firstName} ${student.lastName}`}</span>
             </div>
             <div className="flex items-center gap-4">
               <span
                 className={`px-2 py-1 text-sm rounded-full ${
-                  status === "Admis"
+                  !student.isRepeating
                     ? "bg-green-100 text-green-700"
                     : "bg-orange-100 text-orange-700"
                 }`}
               >
-                {status}
+                {student.isRepeating}
               </span>
               <Button variant="ghost" size="icon">
                 <Eye className="h-4 w-4" />
               </Button>
             </div>
           </div>
+        ))}
       </div>
     </Card>
   );
+};

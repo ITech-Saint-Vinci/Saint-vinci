@@ -1,7 +1,11 @@
 import { Outlet } from "react-router";
+import { Header } from "./header";
 
 export const MainLayout = () => (
-  <div className="bg-[#185759]">
-    <Outlet />
-  </div>
+  <>
+    <Header />
+    <div className="bg-[#185759]">
+      <Outlet />
+    </div>
+  </>
 );

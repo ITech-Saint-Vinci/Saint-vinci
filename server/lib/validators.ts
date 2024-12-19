@@ -12,4 +12,6 @@ export const passwordValidator = z.string().min(6);
 
 export const booleanValidator = z.boolean();
 
+export const dateValidator = z.coerce.date();
+
 export const arrayValidator = (type: z.ZodType) => z.array(type);
