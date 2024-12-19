@@ -32,7 +32,7 @@ function CloseYear() {
         <Button variant="default" onClick={back}
           className="bg-emerald-600 hover:bg-emerald-700">Retour
         </Button>
-        <Button variant="default" onClick={onSubmit} disabled={mutationPatchYear.isLoading || !mutationOnLoad.data?.year || mutationOnLoad.data?.students.map((classes)=>classes.students).flat().length ===0}
+        <Button variant="default" onClick={onSubmit} disabled={mutationPatchYear.isLoading || !mutationOnLoad.data?.year.year || mutationOnLoad.data?.students.map((classes)=>classes.students).flat().length ===0}
           className="bg-destructive hover:bg-destructive-100">Valider
         </Button>
         

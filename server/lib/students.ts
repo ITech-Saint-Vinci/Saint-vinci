@@ -4,6 +4,7 @@ import { User } from "../models/user";
 import { Class } from "../models/class";
 import { Students } from "../models/student";
 import { apiConfig } from "../config";
+import AcademicYears from "../models/academicYears";
 
 type Students = {
   firstName: string;
@@ -116,4 +117,11 @@ export const createClasses = async (records: CsvRecord[], teachersMap: { [key: s
   }
 
   return classesMap;
+}
+
+export const createYears = async ()=>{
+  const date = new Date()
+  const yearStart = date.getFullYear()
+  const yearEnd = yearStart + 1
+  return await AcademicYears.create({year: `${yearStart}-${yearEnd}`, isCurrent: true})
 }
