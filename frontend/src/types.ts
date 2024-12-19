@@ -9,6 +9,7 @@ export type StudentLevel = '1ère section maternelle' | '2ème section maternell
 
 export type Student = {
   _id: string;
+  _id: string;
   firstName: string;
   lastName: string;
   isReapeating: boolean;
