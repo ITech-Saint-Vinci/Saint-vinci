@@ -113,6 +113,7 @@ export const InscriptionForm = () => {
               <Button
                 type="submit"
                 className="bg-emerald-600 hover:bg-emerald-700"
+                onClick={() => form.reset()}
               >
                 Ajouter
               </Button>

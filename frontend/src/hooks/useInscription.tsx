@@ -59,6 +59,7 @@ const useInscription = () => {
   const onSubmit = async (values: InscriptionFormValues) => {
     try {
       const result = await inscriptionStudent(values);
+      window.location.reload();
       setValid(result.message);
     } catch (error) {
       const err = error as Error;
