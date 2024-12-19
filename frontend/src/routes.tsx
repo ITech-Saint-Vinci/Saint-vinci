@@ -3,6 +3,7 @@ import ProtectedRoute from "./components/layout/protectedRoute";
 import Root from "./pages/root/root";
 import { SignIn } from "./pages/signIn/signIn";
 import { MainLayout } from "./components/layout/mainLayout";
+import { UserRole } from "./contants";
 import { InscriptionForm } from "./components/forms/inscriptionForm";
 
 export const router = createBrowserRouter([
@@ -18,7 +19,15 @@ export const router = createBrowserRouter([
         element: <InscriptionForm onSubmit={() => {}}/>,
       },
       {
-        element: <ProtectedRoute />,
+        path: "/popup",
+        element: <InscriptionForm onSubmit={() => {}}/>,
+      },
+      {
+        element: (
+          <ProtectedRoute
+            allowedRoles={[UserRole.Teacher, UserRole.Admin, UserRole.Director]}
+          />
+        ), 
         children: [
           {
             path: "/",

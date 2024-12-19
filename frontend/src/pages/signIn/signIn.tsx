@@ -1,5 +1,6 @@
 import { SignInForm, SignInFormValues } from "@/components/forms/sighnInForm";
 import { useAuth } from "@/hooks/useAuth";
+import { FormError } from "@/components/ui/error";
 
 const signInFn = async ({
   username,
@@ -24,15 +25,24 @@ const signInFn = async ({
 };
 
 export const SignIn = () => {
-  const { mutate, isLoading } = useAuth(signInFn);
+  const { mutate, isLoading, error } = useAuth(signInFn);
 
   const onSubmit = async (values: SignInFormValues) => {
     mutate(values);
   };
 
   return (
-    <div className="flex justify-center items-center flex-col p-48 space-y-8 w-screen h-screen">
+    <div className="flex justify-center items-center flex-col p-44 space-y-8 w-screen h-screen">
       <div className="bg-white rounded-md w-2/4 h-full flex items-center flex-col p-8">
+        {(error as Error) && (
+          <FormError
+            message={
+              error instanceof Error
+                ? error.message
+                : "An unknown error occurred"
+            }
+          />
+        )}
         <div className="text-3xl font-bold">Sign in</div>
         <SignInForm onSubmit={onSubmit} isLoading={isLoading} />
       </div>

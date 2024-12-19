@@ -16,6 +16,7 @@ const configSchema = z.object({
   }),
   auth: z.object({
     jwtSecret: stringValidator,
+    tOrginalPassword: stringValidator
   }),
   cors: z.object({
     origin: arrayValidator(stringValidator),
@@ -35,6 +36,7 @@ const values: ConfigType = {
   },
   auth: {
     jwtSecret: process.env.JWT_SECRET!,
+    tOrginalPassword: process.env.TEACHER_ORGINAL_PASSWORD!
   },
   cors: {
     origin: process.env.CORS_ORIGIN!.split(","),

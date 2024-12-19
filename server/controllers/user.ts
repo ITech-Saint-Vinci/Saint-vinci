@@ -5,6 +5,8 @@ import type { Request, Response } from "express";
 import { User } from "../models/user";
 import { Types } from "mongoose";
 import { TOKEN_CONSTENT } from "../contansts";
+import { userValidation } from "../middleware/authValidation";
+import { z } from "zod";
 
 
 type AuthResponse<T> = {
@@ -32,12 +34,6 @@ const validatePassword = async (
   return bcrypt.compare(plainPassword, hashedPassword);
 };
 
-const createAuthResponse = <T>(
-  status: number,
-  data: AuthResponse<T>,
-  res: Response
-): Response<any, Record<string, any>> => res.status(status).json(data);
-
 export const signIn = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   try {
@@ -53,15 +49,10 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     
     const token = createToken(user._id);
     
-    createAuthResponse(200, { token }, res);
+    res.json({token});
   } catch (error) {
-    createAuthResponse(
-      401,
-      {
-        message: error as string,
-      },
-      res
-    );
+    const err = error as Error
+    res.status(401).json({ message: err.message as string})
   }
 };
 
@@ -80,11 +71,16 @@ export const validateToken = async (req: Request, res: Response): Promise<void> 
     const token = authHeader.split(' ')[1];
 
     const decoded = jwt.verify(token, apiConfig.auth.jwtSecret) as jwt.JwtPayload;
+    const user = await User.findById(decoded._id)
+
+    if(!user){
+      res.status(404).json({message: "invalid token"})
+      return
+    }
 
     res.status(200).json({valid: true, data:{
-      admin:{
-        _id: decoded._id
-      }
+        _id: decoded._id,
+        role: user?.role
     }})
   } catch (error) {
 
@@ -107,5 +103,31 @@ export const validateToken = async (req: Request, res: Response): Promise<void> 
       valid: false, 
       error: 'Internal server error' 
     });
+  }
+};
+
+export const userUpdate = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const id = req.user._id;
+  const { password } = req.body;
+  try {
+    const updateData: Partial<z.infer<typeof userValidation>> = {};
+
+    if (password) {
+      updateData.password = await hashPassword(password);
+    }
+
+    const user = await User.findOneAndUpdate(
+      { _id: id },
+      { $set: updateData }
+    );
+
+    const token = createToken(user!._id);
+    res.json({message: "sucsessfully updated"})
+  } catch (error) {
+    const err = error as Error
+    res.status(401).json({message: err.message})
   }
 };
