@@ -6,7 +6,8 @@ import { apiConfig } from '../config';
 import { User } from '../models/user';
 import { Class } from '../models/class';
 import { parseCSV } from '../lib/utils';
-import { createClasses, createTeachers } from '../lib/students';
+import { createClasses, createTeachers, createYears } from '../lib/students';
+import AcademicYears from '../models/academicYears';
 
 (async ()=> {
   try {
@@ -16,6 +17,7 @@ import { createClasses, createTeachers } from '../lib/students';
     await Students.deleteMany({});
     await Class.deleteMany({});
     await User.deleteMany({ role: 'teacher' });
+    await AcademicYears.deleteMany({});
 
     const csvBuffer = fs.readFileSync(path.resolve(__dirname, 'students.csv'));
     const records = parseCSV(csvBuffer);
@@ -23,7 +25,9 @@ import { createClasses, createTeachers } from '../lib/students';
     const teachersMap = await createTeachers(records);
     await createClasses(records, teachersMap);
 
-
+    await createYears()
+    console.log('Academic year created');
+    
     await mongoose.connection.close();
     console.log('Seeding completed');
   } catch (error) {
