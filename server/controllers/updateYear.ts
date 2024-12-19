@@ -60,7 +60,7 @@ async function promoteStudents() {
 }
 
 type RequestBody = {year: string}
-export const updateYear =  async (req: Request<{},{},RequestBody>,res: Response, next:NextFunction )=>{
+export const updateYear =  async (req: Request<{},{},RequestBody>,res: Response )=>{
     try{
         const yearStart : number = parseInt(req.body.year.split("-")[0]) 
         const yearEnd : number = parseInt(req.body.year.split("-")[1]) 
@@ -72,8 +72,9 @@ export const updateYear =  async (req: Request<{},{},RequestBody>,res: Response,
         await AcademicYears.create({year : `${yearStart+1}-${yearEnd+1}`})
         const teachers = await User.find({role: "teacher"}, {username:0,password:0, createdAt:0, __v:0, role:0})
         const notif : {message: string }[]= []
+        const nameDirector = req.user.username.split("_").join(" ")
         teachers.map((teacher)=>{
-            const newNotif = new Notifications({message: "L'année a été clôturé !", userId: teacher._id})
+            const newNotif = new Notifications({subject:"Clôture de l'année", message: `Bonjour à tous les professeurs, l'année ${req.body.year} a été clôturé !`, userId: teacher._id, author:`${nameDirector}`})
             notif.push(newNotif)
         })
         await Notifications.insertMany(notif)

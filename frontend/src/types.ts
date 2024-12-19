@@ -33,3 +33,10 @@ export type MutationOnLoad = {
 export type UpdateStatusData = { studentId: string; isReapeating: boolean };
 
 export type ClassType = { _id: string; name: string };
+export type NotificationsType = {_id :string, subject: string, message: string, isReading: boolean, author: string}
+export type NotificationsProps = {notification: NotificationsType, onClickButton: (id: string)=>void}
+export type NotificationsDeleteProps = {notifId: string}
+
+export type PaginationProps = {page: number, setPage : (value: number)=>void,totalPages: number}
+
+export type VariantToastProps = "default" | "success" | "destructive"
