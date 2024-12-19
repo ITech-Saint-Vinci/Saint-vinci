@@ -27,7 +27,7 @@ teacherRouter.get(
 );
 
 teacherRouter.get(
-  "/yourclasses",
+  "/your/classes",
   requireAuth,
   requireAuthTeacher,
   getClassesTeacher

@@ -5,8 +5,9 @@ import { SignIn } from "./pages/signIn/signIn";
 import { MainLayout } from "./components/layout/mainLayout";
 import CloseYear from "./pages/closeYear/closeYear";
 import { UserRole } from "./contants";
-import Teacher from "./pages/teacher/teacher";
+import Teacher from "./pages/teacher/student";
 import { StudentsPage } from "./pages/public/studentsPage";
+import TeacherRoot from "./pages/dashboard/teacher";
 
 export const router = createBrowserRouter([
   {
@@ -25,15 +26,35 @@ export const router = createBrowserRouter([
           <ProtectedRoute
             allowedRoles={[UserRole.Teacher, UserRole.Admin, UserRole.Director]}
           />
-        ), 
+        ),
         children: [
-          {
-            path: "/",
-            element: <Root />, 
-          },
           {
             path: "/students",
             element: <Teacher />,
+          },
+        ],
+      },
+      {
+        element: (
+          <ProtectedRoute
+            allowedRoles={[UserRole.Admin, UserRole.Director]}
+            redirection="/teacher"
+          />
+        ),
+        children: [
+          {
+            path: "/",
+            element: <Root />,
+          },
+        ],
+      },
+
+      {
+        element: <ProtectedRoute allowedRoles={[UserRole.Teacher]} />,
+        children: [
+          {
+            path: "/teacher",
+            element: <TeacherRoot />,
           },
         ],
       },

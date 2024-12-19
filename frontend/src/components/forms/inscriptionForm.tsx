@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Controller, FormProvider } from "react-hook-form";
 import useInscription from "@/hooks/useInscription";
+import { useState } from "react";
 
 const inscriptionSchema = z.object({
   firstName: z.string().min(1, "Le prénom est requis"),
@@ -21,6 +22,7 @@ const inscriptionSchema = z.object({
 export type InscriptionFormValues = z.infer<typeof inscriptionSchema>;
 
 export const InscriptionForm = () => {
+  const [open, setOpen] = useState(false);
   const form = useZodForm({
     schema: inscriptionSchema,
     defaultValues: {
@@ -31,10 +33,10 @@ export const InscriptionForm = () => {
     },
   });
 
-  const { classes, onSubmit, error, valid } = useInscription();
+  const { classes, onSubmit, error, valid } = useInscription(form, setOpen);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="default"
@@ -113,7 +115,6 @@ export const InscriptionForm = () => {
               <Button
                 type="submit"
                 className="bg-emerald-600 hover:bg-emerald-700"
-                onClick={() => form.reset()}
               >
                 Ajouter
               </Button>

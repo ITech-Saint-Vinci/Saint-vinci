@@ -10,11 +10,12 @@ export type Student = {
   firstName: string;
   lastName: string;
   isRepeating: boolean;
-  birthDate: string;
+  birthdate: string;
   class: { name: string };
 };
 
 export type Classes = {
+  _id: string;
   name: string;
   students: Student[];
 };

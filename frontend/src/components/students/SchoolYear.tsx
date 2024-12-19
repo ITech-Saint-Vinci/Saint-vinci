@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { StudentAccordion } from "@/components/students/StudentAccordion";
 import { useNavigate } from "react-router";
@@ -8,15 +9,17 @@ import { Spinner } from "../loading/spinner";
 import { studentApi } from "@/services/api";
 import { InscriptionForm } from "../forms/inscriptionForm";
 import { Classes } from "@/types";
+import { Download } from "lucide-react";
 
 export function SchoolYear() {
+  const navigate = useNavigate();
+  const { role } = useAuth();
+
   const { data: classes, isLoading } = useStudents(
     "classes",
     studentApi.getStudentsByClass
   );
-  console.log(classes);
-  const navigate = useNavigate();
-  const { role } = useAuth();
+
   if (isLoading) return <Spinner />;
 
   return (
@@ -35,7 +38,11 @@ export function SchoolYear() {
               Clôturer l'année
             </Button>
           )}
-          {role === UserRole.Admin && <InscriptionForm />}
+          {role === UserRole.Admin && (
+            <>
+              <InscriptionForm />
+            </>
+          )}
         </div>
       </div>
 
@@ -51,3 +58,5 @@ export function SchoolYear() {
     </div>
   );
 }
+
+export default SchoolYear;

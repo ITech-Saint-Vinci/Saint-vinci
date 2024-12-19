@@ -15,9 +15,10 @@ export const studentApi = {
   },
 
   getAllClasses: async (): Promise<{ data: Student[] }> => {
-    const response = await fetch(`${API_URL}/teacher/yourclasses`, {
+    const response = await fetch(`${API_URL}/teacher/your/classes`, {
       headers: getHeaders(),
     });
+
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des élèves");
     }

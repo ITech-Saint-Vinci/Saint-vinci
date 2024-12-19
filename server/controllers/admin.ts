@@ -43,7 +43,7 @@ export const addAStudent = async (
       birthdate,
     });
 
-    if (!student) {
+    if (student) {
       throw new Error(`Student ${firstName} ${lastName} not found`);
     }
 

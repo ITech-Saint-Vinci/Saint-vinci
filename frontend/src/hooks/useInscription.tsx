@@ -2,12 +2,26 @@ import { useEffect, useState } from "react";
 import { InscriptionFormValues } from "@/components/forms/inscriptionForm";
 import { useAuth } from "./useAuth";
 import { ClassType } from "@/types";
+import { UseFormReturn } from "react-hook-form";
+import { useNavigate } from "react-router";
 
-const useInscription = () => {
+const useInscription = (
+  form: UseFormReturn<
+    {
+      firstName: string;
+      lastName: string;
+      birthDate: string;
+      classes: string;
+    },
+    undefined
+  >,
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const [classes, updateClasses] = useState<ClassType[]>([]);
   const [error, setError] = useState("");
   const [valid, setValid] = useState("");
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   const getClass = async () => {
     const response = await fetch("http://localhost:3001/api/teacher/classes", {
@@ -26,7 +40,6 @@ const useInscription = () => {
 
   const fetchClass = async () => {
     const listClass = await getClass();
-    console.log(listClass);
     updateClasses(listClass.data);
   };
 
@@ -59,8 +72,10 @@ const useInscription = () => {
   const onSubmit = async (values: InscriptionFormValues) => {
     try {
       const result = await inscriptionStudent(values);
-      window.location.reload();
       setValid(result.message);
+      form.reset();
+      setOpen(false);
+      navigate(0);
     } catch (error) {
       const err = error as Error;
       setError(err.message);
