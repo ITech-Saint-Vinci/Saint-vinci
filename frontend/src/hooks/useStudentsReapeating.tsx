@@ -2,7 +2,7 @@ import { ResponsePatch, StudentsGetResponse, UpdateStatusData } from "@/types";
 import { useAuth } from "./useAuth";
 import { z } from "zod";
 
-const useStudents = ()=>{
+const useStudentsReapeating = ()=>{
     const {token}= useAuth()
     const getStudentsRepeating = async (): Promise<StudentsGetResponse[]>=> {
         const response = await fetch("http://localhost:3001/api/students/repeating", {
@@ -50,4 +50,4 @@ const useStudents = ()=>{
       };
       return {updateStatusStudent, getStudentsRepeating}
 }
-export default useStudents
+export default useStudentsReapeating
