@@ -8,7 +8,7 @@ interface StudentListProps {
   lastName: string;
   birthday: Date;
   status: string;
-  level: string;
+  class:{name: string;}
 }
 
 export const StudentList = ({_id, firstName, lastName, birthday, status }: StudentListProps) =>(

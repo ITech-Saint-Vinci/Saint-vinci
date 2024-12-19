@@ -1,8 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { StudentAccordion } from "@/components/students/StudentAccordion";
+import { useStudents } from "@/hooks/useStudents";
+import { Spinner } from "../loading/spinner";
 
 
 export function SchoolYear() {
+  const { data : students, isLoading } = useStudents();
+
+  if(isLoading) return <Spinner />
+
   return (
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-8">
@@ -16,11 +22,14 @@ export function SchoolYear() {
       </div>
 
       <div className="space-y-4">
-        <StudentAccordion level="CM2" students={[]} />
-        <StudentAccordion level="CM1" students={[]} />
-        <StudentAccordion level="CE2" students={[]} />
-        <StudentAccordion level="CE1" students={[]} />
-        <StudentAccordion level="CP" students={[]} />
+      {
+            
+              students!.data.map((student) => (
+                <StudentAccordion student={student} />
+                
+              ))
+            }
+        
       </div>
     </div>
   );

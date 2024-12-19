@@ -28,12 +28,12 @@ function StudentDashboard() {
         students!.data.map((student) => (
           <StudentList
             key={student._id}
-            level={student.level}
+            class={student.class}
             _id={student._id}
             firstName={student.firstName}
             lastName={student.lastName}
             birthday={new Date(student.birthdate)}
-            status="Admis"
+            status={student.status}
           />
         ))
       }
