@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { InscriptionFormValues } from "@/components/forms/inscriptionForm";
 import { useAuth } from "./useAuth";
-
-type ClassType = {_id:string, name:string}
+import { ClassType } from "@/types";
 
 const useInscription = () => {
     const [classes, updateClasses] = useState<ClassType[]>([])
     const [error, setError] = useState("")
     const [valid, setValid] = useState("")
     const {token} = useAuth()
-    
+
     const getClass = async () => {
     try {
         const response = await fetch(

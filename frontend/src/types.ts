@@ -20,3 +20,4 @@ export type StudentsGetResponse = {_id: string, name: StudentLevel, students: St
 export type GetYearResponse = {year: string}
 export type MutationOnLoad = {students: StudentsGetResponse[], year: GetYearResponse}
 export type UpdateStatusData = {studentId: string, isReapeating:boolean}
+export type ClassType = {_id:string, name:string}
