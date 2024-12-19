@@ -4,6 +4,7 @@ import { User } from "../models/user";
 import { Class } from "../models/class";
 import { Students } from "../models/student";
 import { apiConfig } from "../config";
+import AcademicYears from "../models/academicYears";
 
 type Students = {
   firstName: string;
@@ -91,14 +92,15 @@ export const createClasses = async (records: CsvRecord[], teachersMap: { [key: s
   const classData = splitStudents(records, teachersMap);
 
   const classesMap: { [key: string]: mongoose.Types.ObjectId } = {};
-
+  let i = 1
   for (const { className, teacher, studentsData } of classData) {
     const classDoc = await Class.create({
       name: serializeData(className),
       teacher,
       students: [],
+      order: i
     });
-
+    i+=1
     const studentDocs = await Students.insertMany(
       studentsData.map(student => ({
         ...student,
@@ -115,4 +117,11 @@ export const createClasses = async (records: CsvRecord[], teachersMap: { [key: s
   }
 
   return classesMap;
+}
+
+export const createYears = async ()=>{
+  const date = new Date()
+  const yearStart = date.getFullYear()
+  const yearEnd = yearStart + 1
+  return await AcademicYears.create({year: `${yearStart}-${yearEnd}`, isCurrent: true})
 }

@@ -34,6 +34,13 @@ const validatePassword = async (
   return bcrypt.compare(plainPassword, hashedPassword);
 };
 
+const createAuthResponse = <T>(
+  status: number,
+  data: AuthResponse<T>,
+  res: Response
+): Response<any, Record<string, any>> => res.status(status).json(data);
+
+
 export const signIn = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   try {

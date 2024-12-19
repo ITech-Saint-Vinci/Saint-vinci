@@ -3,6 +3,7 @@ import ProtectedRoute from "./components/layout/protectedRoute";
 import Root from "./pages/root/root";
 import { SignIn } from "./pages/signIn/signIn";
 import { MainLayout } from "./components/layout/mainLayout";
+import CloseYear from "./pages/closeYear/closeYear";
 import { UserRole } from "./contants";
 import Teacher from "./pages/teacher/teacher";
 
@@ -28,6 +29,21 @@ export const router = createBrowserRouter([
           {
             path: "/students",
             element: <Teacher />,
+          },
+        
+        ],
+      },
+
+      {
+        element: (
+          <ProtectedRoute
+            allowedRoles={[UserRole.Director]}
+          />
+        ),
+        children: [
+          {
+            path: "/closeYear",
+            element: <CloseYear />,
           },
         ],
       },
