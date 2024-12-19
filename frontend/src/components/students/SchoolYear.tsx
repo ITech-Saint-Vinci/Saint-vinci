@@ -27,6 +27,7 @@ export function SchoolYear() {
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold">Année 2024-2025</h2>
+        <div className="flex items-center justify-between space-x-4"> 
         <Button
           variant="default"
           className="bg-emerald-600 hover:bg-emerald-700"
@@ -34,6 +35,7 @@ export function SchoolYear() {
           Clôturer l'année
         </Button>
         <InscriptionForm/>
+        </div>
       </div>
 
       <div className="space-y-4">
