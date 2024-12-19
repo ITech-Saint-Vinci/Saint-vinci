@@ -43,7 +43,7 @@ export function SchoolYear() {
         {classes.data.map((classe: Classes) => (
           <StudentAccordion
             key={classe._id}
-            level={classe}
+            level={classe.name}
             students={classe.students}
           />
         ))}
