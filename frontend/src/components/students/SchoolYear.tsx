@@ -31,7 +31,9 @@ export function SchoolYear() {
           Clôturer l'année
         </Button>
         }
+        {role === UserRole.Admin &&
         <InscriptionForm/>
+      }
         </div>
         
       </div>

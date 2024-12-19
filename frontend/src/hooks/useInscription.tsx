@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { InscriptionFormValues } from "@/components/forms/inscriptionForm";
+import { useAuth } from "./useAuth";
+
+type ClassType = {_id:string, name:string}
 
 const useInscription = () => {
-    const [classes, updateClasses] = useState([])
+    const [classes, updateClasses] = useState<ClassType[]>([])
     const [error, setError] = useState("")
     const [valid, setValid] = useState("")
-
+    const {token} = useAuth()
+    
     const getClass = async () => {
     try {
         const response = await fetch(
@@ -13,7 +17,7 @@ const useInscription = () => {
             {
                 method: "GET",
                 headers: {
-                    // Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
             }
@@ -33,7 +37,6 @@ const useInscription = () => {
             const listClass = await getClass() 
             updateClasses(listClass.data)
         } catch (error) {
-            console.log("error")
         }
     }
 
@@ -48,7 +51,7 @@ const useInscription = () => {
                 {
                     method: "POST",
                     headers: {
-                        // Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
@@ -74,10 +77,8 @@ const useInscription = () => {
     const onSubmit = async (values:InscriptionFormValues) => {
         try {
             const result = await inscriptionStudent(values) 
-            console.log(result)
             setValid(result.message)
-        } catch (error) {
-            console.log("error")
+        } catch (error: any) {
             setError(error.message)
         }
     }

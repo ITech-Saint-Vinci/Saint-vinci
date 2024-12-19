@@ -20,10 +20,6 @@ const inscriptionSchema = z.object({
 
 export type InscriptionFormValues = z.infer<typeof inscriptionSchema>;
 
-interface InscriptionFormProps {
-    onSubmit: (data: InscriptionFormValues) => void;
-}
-
 export const InscriptionForm = ({ }) => {
     const form = useZodForm({
         schema: inscriptionSchema,
@@ -37,7 +33,6 @@ export const InscriptionForm = ({ }) => {
 
     const { classes, onSubmit, error, valid } = useInscription()
 
-    console.log(form.formState.errors)
 
     return (
         <Dialog>

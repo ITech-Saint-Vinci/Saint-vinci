@@ -17,5 +17,5 @@ const upload = multer({ storage, fileFilter });
 adminRouter.post("/csv/upload", requireAuth, requireAuthAdmin, upload.single("file"), handleCSVUpload);
 
 
-adminRouter.get("/classes", getClasses)
-adminRouter.post("/", inscriptionValidation, postStudent)
+adminRouter.get("/classes",requireAuth, requireAuthAdmin, getClasses)
+adminRouter.post("/", requireAuth, requireAuthAdmin, inscriptionValidation, postStudent)
