@@ -11,7 +11,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { UserRole } from "@/contants";
 
 interface StudentAccordionProps {
-  student: Student;
+  level: StudentLevel;
+  students: Student[];
   onClickButton?: (id: string)=> void;
 }
 
@@ -19,10 +20,13 @@ export function StudentAccordion({ level, students, onClickButton  }: StudentAcc
   const {role} = useAuth()
   return (
     <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value={student.class.name}>
+      <AccordionItem value={level}>
         <AccordionTrigger className="hover:no-underline">
           <div className="flex items-center justify-between w-full pr-4">
-            <h2 className="text-xl font-semibold">{student.class.name}</h2>
+            <h2 className="text-xl font-semibold">{level}</h2>
+            <span className="text-sm text-muted-foreground">
+              {students.length} élève{students.length !== 1 ? "s" : ""}
+            </span>
           </div>
         </AccordionTrigger>
         <AccordionContent>
@@ -53,6 +57,12 @@ export function StudentAccordion({ level, students, onClickButton  }: StudentAcc
                   </Button>
                 </div>
               </div>
+            ))}
+            {students.length === 0 && (
+              <p className="text-center text-muted-foreground py-4">
+                Aucun élève dans cette classe
+              </p>
+            )}
           </div>
         </AccordionContent>
       </AccordionItem>
