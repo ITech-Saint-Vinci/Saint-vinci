@@ -1,5 +1,5 @@
 import { Eye } from "lucide-react";
-import { Student, StudentLevel } from "@/types";
+import { Student } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -9,27 +9,22 @@ import {
 } from "@/components/ui/accordion";
 
 interface StudentAccordionProps {
-  level: StudentLevel;
-  students: Student[];
+  student: Student;
 }
 
-export function StudentAccordion({ level, students }: StudentAccordionProps) {
+export function StudentAccordion({ student }: StudentAccordionProps) {
   return (
     <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value={level}>
+      <AccordionItem value={student.class.name}>
         <AccordionTrigger className="hover:no-underline">
           <div className="flex items-center justify-between w-full pr-4">
-            <h2 className="text-xl font-semibold">{level}</h2>
-            <span className="text-sm text-muted-foreground">
-              {students.length} élève{students.length !== 1 ? "s" : ""}
-            </span>
+            <h2 className="text-xl font-semibold">{student.class.name}</h2>
           </div>
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-2 pt-2">
-            {students.map((student) => (
               <div
-                key={student.id}
+                key={student._id}
                 className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
               >
                 <div className="flex items-center gap-3">
@@ -53,12 +48,6 @@ export function StudentAccordion({ level, students }: StudentAccordionProps) {
                   </Button>
                 </div>
               </div>
-            ))}
-            {students.length === 0 && (
-              <p className="text-center text-muted-foreground py-4">
-                Aucun élève dans cette classe
-              </p>
-            )}
           </div>
         </AccordionContent>
       </AccordionItem>

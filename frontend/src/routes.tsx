@@ -4,6 +4,7 @@ import Root from "./pages/root/root";
 import { SignIn } from "./pages/signIn/signIn";
 import { MainLayout } from "./components/layout/mainLayout";
 import { UserRole } from "./contants";
+import Teacher from "./pages/teacher/teacher";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
           {
             path: "/",
             element: <Root />,
+          },
+          {
+            path: "/students",
+            element: <Teacher />,
           },
         ],
       },
