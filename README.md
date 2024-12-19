@@ -25,13 +25,15 @@ Ensuite avant de lancer le projet, créer une copie du `.env.example` en retiran
 
 Lancer la commande suivante dans le terminal `open ssl rand -base64 45` et copier le résultat dans `JWT_SECRET` dans le nouveau `.env`
 
-Copier-coller `$2a$12$001q/dVM7UnDSgdmHcwRDevlT3xhOuGqT.ba7lpGXuyN.8YHb6.MG` dans le `TEACHER_ORGINAL_PASSWORD` dont le mot de passe sera `hello_world` pour se connecter plus tard
+Générer un hash sur [bcrypt](https://bcrypt-generator.com/) et ajouter le hash dans le `TEACHER_ORGINAL_PASSWORD` pour votre mot de passe pour se connecter plus tard
 
 
 Vous pourrez maintenant démarrer le projet: 
 - `cd frontend`
 - `npm run dev`
 - `cd ../server`
+- `docker compose up -d` (Si ce n'est pas déjà fait)
 - `npm run dev`
+
 
 
