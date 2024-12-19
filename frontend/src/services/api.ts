@@ -1,43 +1,46 @@
-import { getStored } from '@/lib/utils';
-import { Student } from '@/types';
+import { getHeaders } from "@/lib/utils";
+import { Classes, Student } from "@/types";
 
-const token = getStored("auth_token");
-const API_URL = 'http://localhost:3001/api';
+const API_URL = "http://localhost:3001/api";
 
 export const studentApi = {
-    getAllStudents: async (): Promise<{data: Student[]}> => {
-        const response = await fetch(`${API_URL}/teacher`,
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-        if (!response.ok) {
-            throw new Error('Erreur lors de la récupération des élèves');
-        }
-        return await response.json();
-    },
-
-    async getStudentById(id: string): Promise<Student> {
-        const response = await fetch(`${API_URL}/teachers/${id}`);
-        if (!response.ok) {
-            throw new Error('Erreur lors de la récupération de l\'élève');
-        }
-        return response.json();
-    },
-
-    async createStudent(student: Omit<Student, 'id'>): Promise<Student> {
-        const response = await fetch(`${API_URL}/teachers`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(student),
-        });
-        if (!response.ok) {
-            throw new Error('Erreur lors de la création de l\'élève');
-        }
-        return response.json();
+  getAllStudents: async (): Promise<{ data: Student[] }> => {
+    const response = await fetch(`${API_URL}/teacher`, {
+      headers: getHeaders(),
+    });
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des élèves");
     }
+    return await response.json();
+  },
+
+  getAllClasses: async (): Promise<{ data: Student[] }> => {
+    const response = await fetch(`${API_URL}/teacher/yourclasses`, {
+      headers: getHeaders(),
+    });
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des élèves");
+    }
+    return await response.json();
+  },
+
+  getStudentById: async (id: string): Promise<Student> => {
+    const response = await fetch(`${API_URL}/teachers/${id}`);
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération de l'élève");
+    }
+    return await response.json();
+  },
+
+  getStudentsByClass: async (): Promise<{ data: Classes[] }> => {
+    const response = await fetch(`${API_URL}/teacher/classes`, {
+      headers: getHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération de l'élève");
+    }
+
+    return await response.json();
+  },
 };
