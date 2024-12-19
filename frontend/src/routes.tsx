@@ -6,6 +6,7 @@ import { MainLayout } from "./components/layout/mainLayout";
 import CloseYear from "./pages/closeYear/closeYear";
 import { UserRole } from "./contants";
 import Teacher from "./pages/teacher/teacher";
+import NotificationsPage from "./pages/notifications/notifications";
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +31,10 @@ export const router = createBrowserRouter([
             path: "/students",
             element: <Teacher />,
           },
-        
+          {
+            path: "/notifications",
+            element: <NotificationsPage />,
+          },
         ],
       },
 

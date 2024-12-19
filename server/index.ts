@@ -7,6 +7,7 @@ import cors from "cors"
 import { studentsRouter } from "./routes/students"
 import { teacherRouter } from "./routes/teacher"
 import { adminRouter } from "./routes/admin"
+import { notificationsRouter } from "./routes/notifications"
 const app = express()
 
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use("/api/students", studentsRouter)
 app.use("/api/teacher", teacherRouter)
 app.use("/api/admin", adminRouter)
 app.use('/api/academicYear', academicYears)
+app.use('/api/notifications', notificationsRouter)
 mongoose.connect(apiConfig.db.mongoUrl).then(() => {
   app.listen(apiConfig.ports.appPort, () => {
     console.log(

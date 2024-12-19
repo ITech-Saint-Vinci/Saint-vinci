@@ -20,3 +20,12 @@ export type StudentsGetResponse = {_id: string, name: StudentLevel, students: St
 export type GetYearResponse = {year: string}
 export type MutationOnLoad = {students: StudentsGetResponse[], year: GetYearResponse}
 export type UpdateStatusData = {studentId: string, isReapeating:boolean}
+
+
+export type NotificationsType = {_id :string, subject: string, message: string, isReading: boolean, author: string}
+export type NotificationsProps = {notification: NotificationsType, onClickButton: (id: string)=>void}
+export type NotificationsDeleteProps = {notifId: string}
+
+export type PaginationProps = {page: number, setPage : (value: number)=>void,totalPages: number}
+
+export type VariantToastProps = "default" | "success" | "destructive"
