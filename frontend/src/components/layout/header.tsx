@@ -13,7 +13,7 @@ export function Header() {
           <h1 className="text-2xl font-bold m-2"><Link to="/">Saint Vinci</Link></h1>
         {isAuthenticated && ( 
           <Button className="bg-green-400 ml-auto">
-            <Link to="/students">Liste</Link>
+            <Link to="/ourStudents">Liste</Link>
           </Button>
         )}
         </div>
