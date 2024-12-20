@@ -34,7 +34,7 @@ teacherRouter.get(
 );
 
 teacherRouter.patch(
-  "/",
+  "/update/student",
   requireAuth,
   requireAnyRole([UserRole.Director, UserRole.Teacher]),
   updateStudent
