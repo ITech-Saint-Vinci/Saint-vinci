@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useHandleYear from './useHandleYear'
 import useStudents from './useStudentsReapeating'
 import { GetYearResponse, ResponsePatch, StudentsGetResponse, UpdateStatusData } from '@/types'
@@ -6,23 +6,15 @@ import { useMutation, UseMutationResult, useQuery } from '@tanstack/react-query'
 import { ToastAction } from "@/components/ui/toast"
 import { toast } from "@/hooks/useToast";
 import { queryClient } from '@/App'
+import { showToast } from '@/lib/utils'
 
-type VariantToastProps = "default" | "success" | "destructive"
 
 const useDirector = () => {
     const {getCurrentYear, patchYear} = useHandleYear()
     const {getStudentsRepeating, updateStatusStudent} = useStudents()
     const [allStudents, setAllStudents] = useState<StudentsGetResponse[]>([])
-      const generateToast  = (variant : VariantToastProps, message: ReactElement| string, description: string, action: any) =>{
-        return toast({
-            variant: variant,
-            title: message as string,
-            description: description,
-            action: <ToastAction altText="Réessayer" onClick={action}>Réessayer</ToastAction>,
-          })
-      }
     const onError = (message : string, mutate: ()=>void)=>{
-         generateToast(
+         showToast(
             "destructive",
             message,
                 "",
@@ -52,13 +44,14 @@ const useDirector = () => {
         onSuccess: ()=>{
         queryOnLoad.refetch()
         }, onError: (e)=> {
-            onError(e.message, ()=>{})}
+            onError(e.message, ()=>{})
+          }
     });
     const mutationPatchYear :UseMutationResult<ResponsePatch, Error, GetYearResponse, void>  = useMutation(patchYear, 
-        {onSuccess: ()=>{
+        {onSuccess: (data)=>{
         toast({}).dismiss()
         queryOnLoad.refetch()
-        generateToast("success", "Mise à jour réussi", "", "")
+        showToast("success", data.message, "", "")
         },
         onError: (e)=> onError(e.message, ()=>{}),
     });
@@ -71,7 +64,7 @@ const useDirector = () => {
     },[])
     useEffect(()=>{
         if ( mutationPatchYear.isLoading ) {
-            generateToast("default", <div className="flex items-center gap-2.5"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"/>En attente des données...</div>, "", ()=>{})
+            showToast("default", <div className="flex items-center gap-2.5"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"/>En attente des données...</div>, "", "")
         }
     },[mutationPatchYear.isLoading])
 

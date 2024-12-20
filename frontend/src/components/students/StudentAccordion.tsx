@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/accordion";
 import { useAuth } from "@/hooks/useAuth";
 import { UserRole } from "@/contants";
+import { useState } from "react";
+import { useToast } from "@/hooks/useToast";
 
 interface StudentAccordionProps {
   level: string;
@@ -18,10 +20,56 @@ interface StudentAccordionProps {
 
 export function StudentAccordion({
   level,
-  students,
+  students: initialStudents,
   onClickButton,
 }: StudentAccordionProps) {
-  const { role, isAuthenticated } = useAuth();
+  const { role, isAuthenticated, token } = useAuth();
+  const { toast } = useToast();
+  const [students, setStudents] = useState(initialStudents);
+
+  const handleClick = async (value: Student) => {
+    try {
+      console.log(value._id);
+      const res = await fetch(
+        "http://localhost:3001/api/teacher/update/student",
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            studentId: value._id,
+            isReapeating: value.isReapeating ? false : true,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+
+      setStudents((prevStudents) =>
+        prevStudents.map((student) =>
+          student._id === value._id
+            ? { ...student, isReapeating: !student.isReapeating }
+            : student
+        )
+      );
+
+      toast({
+        title: "Success",
+        description: "Student status updated.",
+      });
+    } catch (error) {
+      const err = error as Error;
+      toast({
+        title: "Error",
+        description: err.message,
+      });
+    }
+  };
+
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value={level}>
@@ -50,12 +98,12 @@ export function StudentAccordion({
                   {isAuthenticated && (
                     <span
                       className={`px-2 py-1 text-sm rounded-full ${
-                        !student.isRepeating
+                        !student.isReapeating
                           ? "bg-green-100 text-green-700"
                           : "bg-orange-100 text-orange-700"
                       }`}
                     >
-                      {!student.isRepeating ? "Admis" : "Redoublant"}
+                      {!student.isReapeating ? "Admis" : "Redoublant"}
                     </span>
                   )}
                   <Button
@@ -70,6 +118,11 @@ export function StudentAccordion({
                         <Eye className="h-4 w-4" />
                       ))}
                   </Button>
+                  {role == UserRole.Teacher && (
+                    <Button onClick={() => handleClick(student)}>
+                      Report for Repeating
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}

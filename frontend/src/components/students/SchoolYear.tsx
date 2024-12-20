@@ -8,13 +8,11 @@ import { Spinner } from "../loading/spinner";
 import { studentApi } from "@/services/api";
 import { InscriptionForm } from "../forms/inscriptionForm";
 import { Classes } from "@/types";
-import { useState } from "react";
 import { FileUploadDialog } from "../forms/fileUploadForm";
 
 export function SchoolYear() {
   const navigate = useNavigate();
   const { role } = useAuth();
-  const [err, setErr] = useState();
 
   const { data: classes, isLoading } = useStudents(
     "classes",

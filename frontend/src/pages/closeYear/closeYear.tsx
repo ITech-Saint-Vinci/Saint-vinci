@@ -1,4 +1,3 @@
-import { Header } from "@/components/layout/header";
 import { Spinner } from "@/components/loading/spinner";
 import { StudentAccordion } from "@/components/students/StudentAccordion";
 import { Button } from "@/components/ui/button";
@@ -58,10 +57,7 @@ function CloseYear() {
                   onClick={onSubmit}
                   disabled={
                     mutationPatchYear.isLoading ||
-                    !queryOnLoad.data?.year.year ||
-                    queryOnLoad.data?.students
-                      .map((classes) => classes.students)
-                      .flat().length === 0
+                    !queryOnLoad.data?.year.year
                   }
                   className="bg-destructive hover:bg-destructive-100"
                 >

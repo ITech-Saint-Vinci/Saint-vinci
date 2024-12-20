@@ -8,6 +8,7 @@ import { UserRole } from "./contants";
 import Teacher from "./pages/teacher/student";
 import { StudentsPage } from "./pages/public/studentsPage";
 import TeacherRoot from "./pages/dashboard/teacher";
+import NotificationsPage from "./pages/notifications/notifications";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,11 @@ export const router = createBrowserRouter([
             path: "/students",
             element: <Teacher />,
           },
+          {
+            path: "/notifications",
+            element: <NotificationsPage />,
+          },
+         
         ],
       },
       {
