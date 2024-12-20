@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 type InputFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
   name: FieldPath<TFieldValues>;
+  accept?: string;
   type?: React.InputHTMLAttributes<HTMLInputElement>["type"];
   autoComplete?: React.InputHTMLAttributes<HTMLInputElement>["autoComplete"];
   disabled?: boolean;
@@ -31,6 +32,7 @@ export const InputField = <TFieldValues extends FieldValues>({
   autoComplete,
   disabled = false,
   required = false,
+  accept,
   label,
   placeholder,
   leftElement,
@@ -78,6 +80,7 @@ export const InputField = <TFieldValues extends FieldValues>({
                 placeholder={placeholder}
                 aria-invalid={!!fieldState.error}
                 required={required}
+                accept={accept}
                 className={cn(
                   leftElement && "pl-10",
                   rightElement && "pr-10",

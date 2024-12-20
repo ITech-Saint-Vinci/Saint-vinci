@@ -1,14 +1,41 @@
 import express from "express";
-import { requireAnyRole, requireAuth, requireAuthTeacher } from "../middleware/requireAuth";
-import { getClasses, getStudent, getStudents, updateStudent } from "../controllers/teachers";
+import {
+  requireAnyRole,
+  requireAuth,
+  requireAuthTeacher,
+} from "../middleware/requireAuth";
+import {
+  getAllClasses,
+  getClassesTeacher,
+  getStudent,
+  getStudents,
+  updateStudent,
+} from "../controllers/teachers";
 import { UserRole } from "../contansts";
 
 export const teacherRouter = express.Router();
 
-teacherRouter.get("/", requireAuth, requireAnyRole([UserRole.Director, UserRole.Admin, UserRole.Teacher]), getStudents);
+teacherRouter.get("/", getStudents);
 
-teacherRouter.get("/:id", requireAuth, requireAnyRole([UserRole.Director, UserRole.Admin, UserRole.Teacher]), getStudent)
+teacherRouter.get("/classes", getAllClasses);
 
-teacherRouter.get("/classes", requireAuth, requireAuthTeacher, getClasses)
+teacherRouter.get(
+  "/:id",
+  requireAuth,
+  requireAnyRole([UserRole.Director, UserRole.Admin, UserRole.Teacher]),
+  getStudent
+);
 
-teacherRouter.patch("/", requireAuth, requireAnyRole([UserRole.Director, UserRole.Teacher]), updateStudent)
+teacherRouter.get(
+  "/your/classes",
+  requireAuth,
+  requireAuthTeacher,
+  getClassesTeacher
+);
+
+teacherRouter.patch(
+  "/",
+  requireAuth,
+  requireAnyRole([UserRole.Director, UserRole.Teacher]),
+  updateStudent
+);

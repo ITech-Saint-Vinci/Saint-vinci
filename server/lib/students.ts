@@ -10,24 +10,30 @@ type Students = {
   firstName: string;
   lastName: string;
   birthdate: Date;
-}
+};
 
-export const splitStudents = (records: CsvRecord[], teachersMap: { [key: string]: mongoose.Types.ObjectId }) => {
-    const studentsByLevel = records.reduce((acc: { [key: string]: CsvRecord[] }, record) => {
-    const level = record['Niveau'];
-    if (!acc[level]) {
-      acc[level] = [];
-    }
-    acc[level].push(record);
-    return acc;
-  }, {});
+export const splitStudents = (
+  records: CsvRecord[],
+  teachersMap: { [key: string]: mongoose.Types.ObjectId }
+) => {
+  const studentsByLevel = records.reduce(
+    (acc: { [key: string]: CsvRecord[] }, record) => {
+      const level = record["Niveau"];
+      if (!acc[level]) {
+        acc[level] = [];
+      }
+      acc[level].push(record);
+      return acc;
+    },
+    {}
+  );
 
   let classes = [];
 
   for (const [level, students] of Object.entries(studentsByLevel)) {
     students.sort((a, b) => {
-      const dateA = new Date(a['Date de Naissance']).getTime();
-      const dateB = new Date(b['Date de Naissance']).getTime();
+      const dateA = new Date(a["Date de Naissance"]).getTime();
+      const dateB = new Date(b["Date de Naissance"]).getTime();
       return dateA - dateB;
     });
 
@@ -36,21 +42,23 @@ export const splitStudents = (records: CsvRecord[], teachersMap: { [key: string]
 
       const className = `Classe ${level}-${Math.floor(i / 25) + 1}`;
 
-      const teacherName = group.find(
-        (record) => record['Niveau'] === level
-      )?.['Nom Professeur'];
+      const teacherName = group.find((record) => record["Niveau"] === level)?.[
+        "Nom Professeur"
+      ];
 
       if (!teacherName || !teachersMap[teacherName]) {
-        console.warn(`No teacher found for level: ${level}, group starting at index: ${i}`);
+        console.warn(
+          `No teacher found for level: ${level}, group starting at index: ${i}`
+        );
         continue;
       }
 
       const teacher = teachersMap[teacherName];
 
       const studentsData = group.map((student) => ({
-        firstName: serializeData(student['Prénom Élève']),
-        lastName: serializeData(student['Nom Élève']),
-        birthdate: new Date(student['Date de Naissance']),
+        firstName: serializeData(student["Prénom Élève"]),
+        lastName: serializeData(student["Nom Élève"]),
+        birthdate: new Date(student["Date de Naissance"]),
       }));
 
       classes.push({
@@ -64,9 +72,12 @@ export const splitStudents = (records: CsvRecord[], teachersMap: { [key: string]
   return classes;
 };
 
-
-export const createTeachers = async (records: CsvRecord[]): Promise<{ [key: string]: mongoose.Types.ObjectId }> => {
-  const uniqueTeachers = [...new Set(records.map(record => record['Nom Professeur']))];
+export const createTeachers = async (
+  records: CsvRecord[]
+): Promise<{ [key: string]: mongoose.Types.ObjectId }> => {
+  const uniqueTeachers = [
+    ...new Set(records.map((record) => record["Nom Professeur"])),
+  ];
   const teachersMap: { [key: string]: mongoose.Types.ObjectId } = {};
 
   for (const teacherName of uniqueTeachers) {
@@ -74,54 +85,62 @@ export const createTeachers = async (records: CsvRecord[]): Promise<{ [key: stri
       const teacherData = {
         username: serializeData(teacherName),
         password: apiConfig.auth.tOrginalPassword,
-        role: 'teacher',
+        role: "teacher",
       };
       const teacher = await User.create(teacherData);
       teachersMap[teacherName] = teacher._id;
       console.log(`Teacher created: ${teacherName}`);
     } catch (error) {
-      console.error(`This teacher already exsists ${teacherName}:`);
-      continue
+      console.error(
+        `This teacher already exsists Adding anyway${teacherName}:`
+      );
+      continue;
     }
   }
 
   return teachersMap;
-}
+};
 
-export const createClasses = async (records: CsvRecord[], teachersMap: { [key: string]: mongoose.Types.ObjectId }): Promise<{ [key: string]: mongoose.Types.ObjectId }> => {
+export const createClasses = async (
+  records: CsvRecord[],
+  teachersMap: { [key: string]: mongoose.Types.ObjectId }
+): Promise<{ [key: string]: mongoose.Types.ObjectId }> => {
   const classData = splitStudents(records, teachersMap);
 
   const classesMap: { [key: string]: mongoose.Types.ObjectId } = {};
-  let i = 1
+  let i = 1;
   for (const { className, teacher, studentsData } of classData) {
     const classDoc = await Class.create({
       name: serializeData(className),
       teacher,
       students: [],
-      order: i
+      order: i,
     });
-    i+=1
+    i += 1;
     const studentDocs = await Students.insertMany(
-      studentsData.map(student => ({
+      studentsData.map((student) => ({
         ...student,
         class: classDoc._id,
       }))
     );
-    console.log('Students created');
+    console.log("Students created");
 
     await Class.findByIdAndUpdate(classDoc._id, {
-      $push: { students: { $each: studentDocs.map(student => student._id) } },
+      $push: { students: { $each: studentDocs.map((student) => student._id) } },
     });
 
     classesMap[className] = classDoc._id;
   }
 
   return classesMap;
-}
+};
 
-export const createYears = async ()=>{
-  const date = new Date()
-  const yearStart = date.getFullYear()
-  const yearEnd = yearStart + 1
-  return await AcademicYears.create({year: `${yearStart}-${yearEnd}`, isCurrent: true})
-}
+export const createYears = async () => {
+  const date = new Date();
+  const yearStart = date.getFullYear();
+  const yearEnd = yearStart + 1;
+  return await AcademicYears.create({
+    year: `${yearStart}-${yearEnd}`,
+    isCurrent: true,
+  });
+};

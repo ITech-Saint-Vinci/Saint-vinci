@@ -4,28 +4,24 @@ import { MutationFunction, useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 
 const validateTokenAPI = async (token: string) => {
-  try {
-    const response = await fetch(
-      "http://localhost:3001/api/auth/validate-token",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Token validation failed");
+  const response = await fetch(
+    "http://localhost:3001/api/auth/validate-token",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     }
+  );
 
-    const json = await response.json();
-    setStored("role", json.data.role);
-    return json;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error("Token validation failed");
   }
+
+  const json = await response.json();
+  setStored("role", json.data.role);
+  return json;
 };
 
 export const useAuth = <T,>(mutationFn?: MutationFunction<unknown, T>) => {

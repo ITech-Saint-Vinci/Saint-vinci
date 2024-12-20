@@ -8,7 +8,6 @@ import { TOKEN_CONSTENT } from "../contansts";
 import { userValidation } from "../middleware/authValidation";
 import { z } from "zod";
 
-
 type AuthResponse<T> = {
   token?: string;
   message?: string;
@@ -40,7 +39,6 @@ const createAuthResponse = <T>(
   res: Response
 ): Response<any, Record<string, any>> => res.status(status).json(data);
 
-
 export const signIn = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   try {
@@ -48,67 +46,75 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     if (!user) {
       throw new Error("Invalid credentials");
     }
-    
+
     const matches = await validatePassword(password, user.password!);
     if (!matches) {
       throw new Error("Invalid credentials");
     }
-    
+
     const token = createToken(user._id);
-    
-    res.json({token});
+
+    res.json({ token });
   } catch (error) {
-    const err = error as Error
-    res.status(401).json({ message: err.message as string})
+    const err = error as Error;
+    res.status(401).json({ message: err.message as string });
   }
 };
 
-export const validateToken = async (req: Request, res: Response): Promise<void> => {
+export const validateToken = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      res.status(401).json({ 
-        valid: false, 
-        error: 'No token provided or invalid token format' 
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({
+        valid: false,
+        error: "No token provided or invalid token format",
       });
-      return
+      return;
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
-    const decoded = jwt.verify(token, apiConfig.auth.jwtSecret) as jwt.JwtPayload;
-    const user = await User.findById(decoded._id)
+    const decoded = jwt.verify(
+      token,
+      apiConfig.auth.jwtSecret
+    ) as jwt.JwtPayload;
+    const user = await User.findById(decoded._id);
 
-    if(!user){
-      res.status(404).json({message: "invalid token"})
-      return
+    if (!user) {
+      res.status(404).json({ message: "invalid token" });
+      return;
     }
 
-    res.status(200).json({valid: true, data:{
+    res.status(200).json({
+      valid: true,
+      data: {
         _id: decoded._id,
-        role: user?.role
-    }})
+        role: user?.role,
+      },
+    });
   } catch (error) {
-
     if (error instanceof jwt.TokenExpiredError) {
-      res.status(401).json({ 
-        valid: false, 
-        error: 'Token has expired' 
+      res.status(401).json({
+        valid: false,
+        error: "Token has expired",
       });
     }
 
     if (error instanceof jwt.JsonWebTokenError) {
-      res.status(401).json({ 
-        valid: false, 
-        error: 'Invalid token' 
+      res.status(401).json({
+        valid: false,
+        error: "Invalid token",
       });
     }
 
-    console.error('Token validation error:', error);
-    res.status(500).json({ 
-      valid: false, 
-      error: 'Internal server error' 
+    console.error("Token validation error:", error);
+    res.status(500).json({
+      valid: false,
+      error: "Internal server error",
     });
   }
 };
@@ -126,15 +132,12 @@ export const userUpdate = async (
       updateData.password = await hashPassword(password);
     }
 
-    const user = await User.findOneAndUpdate(
-      { _id: id },
-      { $set: updateData }
-    );
+    const user = await User.findOneAndUpdate({ _id: id }, { $set: updateData });
 
     const token = createToken(user!._id);
-    res.json({message: "sucsessfully updated"})
+    res.json({ message: "sucsessfully updated" });
   } catch (error) {
-    const err = error as Error
-    res.status(401).json({message: err.message})
+    const err = error as Error;
+    res.status(401).json({ message: err.message });
   }
 };
