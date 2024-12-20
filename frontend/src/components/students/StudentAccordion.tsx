@@ -120,7 +120,9 @@ export function StudentAccordion({
                   </Button>
                   {role == UserRole.Teacher && (
                     <Button onClick={() => handleClick(student)}>
-                      Report for Repeating
+                      {student.isReapeating
+                        ? "Unreport for Repeating"
+                        : "Report for Repeating"}
                     </Button>
                   )}
                 </div>

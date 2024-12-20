@@ -75,16 +75,11 @@ export const updateStudent = async (
       return;
     }
 
-    if (isReapeating) {
-      await Students.updateOne(
-        { _id: studentId },
-        { isReapeating: isReapeating }
-      );
-      res.status(200).json({ message: "Updated succsessfully" });
-      return;
-    }
-
-    res.status(200).json({ message: "No updates applied to the student" });
+    await Students.findByIdAndUpdate(
+      { _id: studentId },
+      { isReapeating: isReapeating }
+    );
+    res.status(200).json({ message: "Updated succsessfully" });
   } catch (error) {
     res.status(401).json({ error });
   }
