@@ -50,12 +50,12 @@ export function StudentAccordion({
                   {isAuthenticated && (
                     <span
                       className={`px-2 py-1 text-sm rounded-full ${
-                        !student.isRepeating
+                        !student.isReapeating
                           ? "bg-green-100 text-green-700"
                           : "bg-orange-100 text-orange-700"
                       }`}
                     >
-                      {!student.isRepeating ? "Admis" : "Redoublant"}
+                      {!student.isReapeating ? "Admis" : "Redoublant"}
                     </span>
                   )}
                   <Button

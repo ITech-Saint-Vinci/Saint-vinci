@@ -32,7 +32,7 @@ export const SignIn = () => {
   };
 
   return (
-    <div className="flex justify-center items-center flex-col p-44 space-y-8 w-screen h-screen">
+    <div className="flex justify-center items-center flex-col p-44 space-y-8 w-screen">
       <div className="bg-white rounded-md w-2/4 h-full flex items-center flex-col p-8">
         {(error as Error) && (
           <FormError
