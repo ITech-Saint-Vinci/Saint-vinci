@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { StudentAccordion } from "@/components/students/StudentAccordion";
 import { useNavigate } from "react-router";
@@ -9,11 +8,13 @@ import { Spinner } from "../loading/spinner";
 import { studentApi } from "@/services/api";
 import { InscriptionForm } from "../forms/inscriptionForm";
 import { Classes } from "@/types";
-import { Download } from "lucide-react";
+import { useState } from "react";
+import { FileUploadDialog } from "../forms/fileUploadForm";
 
 export function SchoolYear() {
   const navigate = useNavigate();
   const { role } = useAuth();
+  const [err, setErr] = useState();
 
   const { data: classes, isLoading } = useStudents(
     "classes",
@@ -40,6 +41,7 @@ export function SchoolYear() {
           )}
           {role === UserRole.Admin && (
             <>
+              <FileUploadDialog />
               <InscriptionForm />
             </>
           )}

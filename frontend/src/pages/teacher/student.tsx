@@ -1,8 +1,13 @@
 import { StudentList } from "@/components/students/StudentList";
 import { useStudents } from "@/hooks/useStudents";
+import { studentApi } from "@/services/api";
 
 function StudentDashboard() {
-  const { data: students, isLoading, error } = useStudents();
+  const {
+    data: students,
+    isLoading,
+    error,
+  } = useStudents("students", studentApi.getAllStudents);
 
   if (isLoading) {
     return (
