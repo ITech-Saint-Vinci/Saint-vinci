@@ -1,4 +1,3 @@
-import { Header } from '@/components/layout/header'
 import Cardnotification from '@/components/notification/Cardnotification'
 import PaginationComponent from '@/components/pagination/pagination'
 import { Button } from '@/components/ui/button'
@@ -10,8 +9,6 @@ const NotificationsPage = () => {
     const {notifications, page, setPage, totalPages, deleteAllNotifUser, deleteOneNotif} = useNotifications()
   return (
     <div className="min-h-screen flex flex-col items-center bg-background ">
-        <>
-        <Header />
         <main className="container px-4 py-6 flex flex-col items-center gap-3 w-full">
                 {notifications.data && notifications.data.data.length > 0? 
                 <>
@@ -27,7 +24,6 @@ const NotificationsPage = () => {
                 </>                
                 : <div>Vous n'avez pas de notifications ! </div>}
       </main>
-      </>
     </div>
   )
 }

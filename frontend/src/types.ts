@@ -9,7 +9,7 @@ export type Student = {
   _id: string;
   firstName: string;
   lastName: string;
-  isRepeating: boolean;
+  isReapeating: boolean;
   birthdate: string;
   class: { name: string };
 };
@@ -24,6 +24,7 @@ export type ResponsePatch = { message: string };
 export type StudentsGetResponse = {
   _id: string;
   students: Student[];
+  name: string
 };
 export type GetYearResponse = { year: string };
 export type MutationOnLoad = {
