@@ -16,8 +16,8 @@ const NotificationsPage = () => {
                 {notifications.data && notifications.data.data.length > 0? 
                 <>
                     <Button variant="destructive" className='self-end' onClick={()=>deleteAllNotifUser.mutate()}><Trash/></Button>
-                    <div className='w-full h-[80vh] overflow-auto flex flex-col gap-3'>
-                        <div>
+                    <div className='w-full h-[75vh] overflow-auto '>
+                        <div className='flex flex-col gap-3'>
                             {notifications.data.data.map((notif : NotificationsType)=>{
                                 return <Cardnotification key={notif._id} notification={notif} onClickButton={(id)=>deleteOneNotif.mutate(id)}  />
                             })}
