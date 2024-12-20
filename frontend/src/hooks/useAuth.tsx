@@ -59,11 +59,15 @@ export const useAuth = <T,>(mutationFn?: MutationFunction<unknown, T>) => {
   });
 
   const signOut = () => {
-    removeStored("auth_token");
     removeStored("role");
+    removeStored("auth_token");
     queryClient.setQueryData(["auth"], null);
     queryClient.invalidateQueries();
   };
+
+  if (!token) {
+    removeStored("role");
+  }
 
   return {
     mutate: authMutation.mutate,
