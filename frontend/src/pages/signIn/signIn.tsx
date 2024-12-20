@@ -43,7 +43,7 @@ export const SignIn = () => {
             }
           />
         )}
-        <div className="text-3xl font-bold">Sign in</div>
+        <div className="text-3xl font-bold">Connexion</div>
         <SignInForm onSubmit={onSubmit} isLoading={isLoading} />
       </div>
     </div>

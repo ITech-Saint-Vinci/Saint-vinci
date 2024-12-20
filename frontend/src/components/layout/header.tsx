@@ -32,14 +32,14 @@ export function Header() {
             </Link>
             <Link to="/sign-in" onClick={signOut}>
               <Button className="mr-8 bg-emerald-600">
-                Sign out
+                Déconnexion
               </Button>
             </Link>
           </>
         )}
         {!isAuthenticated && (
           <Button className="mr-8">
-            <Link to="/sign-in">Sign In</Link>
+            <Link to="/sign-in">Connexion</Link>
           </Button>
         )}
       </div>
