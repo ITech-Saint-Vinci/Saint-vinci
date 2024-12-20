@@ -7,7 +7,7 @@ export const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div>
+    <div className="h-screen">
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
         <Toaster/>
