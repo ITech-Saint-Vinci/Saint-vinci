@@ -34,10 +34,10 @@ export const SignInForm: React.FC<BaseFormProps<SignInFormValues>> = ({
         <InputField
           control={form.control}
           name="username"
-          label="Username"
+          label="Identifiant"
           type="text"
           required
-          placeholder="Enter your username"
+          placeholder="Indiquez votre identifiant"
           disabled={isLoading}
           leftElement={<User2 className="h-4 w-4 text-gray-500" />}
           onEnterPress={() => form.handleSubmit(onSubmit)()}
@@ -46,11 +46,11 @@ export const SignInForm: React.FC<BaseFormProps<SignInFormValues>> = ({
         <InputField
           control={form.control}
           name="password"
-          label="Password"
+          label="Mot de passe"
           type={showPassword ? "text" : "password"}
           required
           autoComplete="current-password"
-          placeholder="Enter your password"
+          placeholder="Indiquez votre mot de passe"
           disabled={isLoading}
           leftElement={<LockIcon className="h-4 w-4 text-gray-500" />}
           rightElement={
